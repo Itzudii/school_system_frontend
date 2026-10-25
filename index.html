@@ -1,0 +1,2619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School System - Integrated Administration & Daybook</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #111827;
+      --card-alt: #162032;
+      --header-bg: #090d16;
+      --border: #1f293d;
+      --border-focus: #3b82f6;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #64748b;
+      
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-light: rgba(59, 130, 246, 0.15);
+      
+      --success: #10b981;
+      --success-hover: #059669;
+      --success-light: rgba(16, 185, 129, 0.15);
+      
+      --warning: #f59e0b;
+      --warning-hover: #d97706;
+      --warning-light: rgba(245, 158, 11, 0.15);
+      
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+      --danger-light: rgba(239, 68, 68, 0.15);
+
+      --info: #06b6d4;
+      --info-light: rgba(6, 182, 212, 0.15);
+
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --radius-lg: 14px;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      font-size: 14px;
+    }
+
+    /* Common Utilities */
+    .hidden { display: none !important; }
+    .flex { display: flex; }
+    .flex-col { display: flex; flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: 8px; }
+    .gap-3 { gap: 12px; }
+    .gap-4 { gap: 16px; }
+    .font-mono { font-family: var(--mono); }
+    .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease-in-out;
+      outline: none;
+      white-space: nowrap;
+      text-decoration: none;
+      user-select: none;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-sm { padding: 4px 10px; font-size: 12px; border-radius: 4px; }
+    .btn-lg { padding: 12px 20px; font-size: 15px; border-radius: var(--radius); }
+
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-success:hover { background: var(--success-hover); }
+
+    .btn-warning { background: var(--warning); color: #000; font-weight: 600; }
+    .btn-warning:hover { background: var(--warning-hover); color: #fff; }
+
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-danger:hover { background: var(--danger-hover); }
+
+    .btn-secondary { background: var(--card-alt); color: var(--text); border-color: var(--border); }
+    .btn-secondary:hover { background: #1e2d44; border-color: var(--border-focus); }
+
+    .btn-ghost { background: transparent; color: var(--text-muted); }
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.05); color: var(--text); }
+
+    /* Form Inputs */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 14px;
+    }
+    .input-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .input-label .req { color: var(--danger); margin-left: 2px; }
+
+    .input-control {
+      width: 100%;
+      background: #0d131f;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-family: var(--font);
+      transition: all 0.15s;
+    }
+    .input-control:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+      background: #111a2c;
+    }
+    .input-control::placeholder { color: var(--text-dim); }
+    select.input-control { cursor: pointer; }
+    textarea.input-control { min-height: 80px; resize: vertical; }
+
+    /* Badge Tags */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+    .badge-verified, .badge-active, .badge-success {
+      background: var(--success-light);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .badge-pending, .badge-warning {
+      background: var(--warning-light);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .badge-inactive, .badge-danger {
+      background: var(--danger-light);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+    .badge-role {
+      background: #1e293b;
+      color: #93c5fd;
+      border: 1px solid #334155;
+    }
+    .badge-role-super {
+      background: rgba(168, 85, 247, 0.2);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+
+    /* Layout Sections */
+    #login-view {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: radial-gradient(circle at 50% 20%, #1e293b 0%, #0b0f19 80%);
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .login-header {
+      padding: 32px 32px 24px;
+      background: linear-gradient(180deg, #162032 0%, var(--card-bg) 100%);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    .login-header h1 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
+    }
+    .login-header p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .login-body {
+      padding: 28px 32px;
+    }
+
+    .login-footer {
+      padding: 14px 24px;
+      background: #0d131f;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Main App Layout */
+    #app-view {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .top-nav {
+      background: var(--header-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #fff;
+      font-size: 18px;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+    .brand-title {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      color: #fff;
+    }
+    .brand-tag {
+      font-size: 11px;
+      color: var(--text-dim);
+      border-left: 1px solid var(--border);
+      padding-left: 10px;
+    }
+
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Sub Navigation Tabs */
+    .tab-bar {
+      background: #101623;
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      padding: 13px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .tab-btn.active {
+      color: #60a5fa;
+      border-bottom-color: #3b82f6;
+      background: rgba(59, 130, 246, 0.06);
+    }
+
+    /* Main Content Area */
+    .main-content {
+      flex: 1;
+      padding: 24px;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .page-title-box h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .page-title-box p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Filter & Action Toolbars */
+    .toolbar-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Data Table Card */
+    .table-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      max-height: calc(100vh - 360px);
+      min-height: 280px;
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    table.data-table th {
+      background: #141c2b;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    table.data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #192233;
+      color: #e2e8f0;
+      transition: background 0.1s;
+    }
+
+    table.data-table tr:hover td {
+      background: #172235;
+      cursor: pointer;
+    }
+    table.data-table tr.selected td {
+      background: rgba(59, 130, 246, 0.18);
+      border-bottom-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .empty-state {
+      padding: 48px 20px;
+      text-align: center;
+      color: var(--text-dim);
+    }
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 12px;
+      opacity: 0.4;
+    }
+    .empty-state h4 {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .empty-state p {
+      font-size: 12px;
+    }
+
+    /* Actions Bottom Bar */
+    .action-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 18px;
+      background: #0d131f;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    /* Summary Bar for Daybook */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .summary-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+    }
+    .summary-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-dim);
+      font-weight: 600;
+    }
+    .summary-value {
+      font-size: 22px;
+      font-weight: 700;
+      margin-top: 4px;
+      font-family: var(--mono);
+    }
+    .val-credit { color: #34d399; }
+    .val-debit { color: #f87171; }
+    .val-net { color: #60a5fa; }
+
+    /* Footer Status Bar */
+    .status-bar {
+      background: var(--header-bg);
+      border-top: 1px solid var(--border);
+      padding: 6px 20px;
+      font-size: 11px;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .status-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      margin-right: 6px;
+    }
+
+    /* Modal System */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.15s ease-out;
+    }
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 580px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      animation: slideUp 0.2s ease-out;
+    }
+    .modal-content.modal-lg { max-width: 800px; }
+    .modal-content.modal-sm { max-width: 420px; }
+
+    .modal-header {
+      padding: 16px 22px;
+      background: #141c2b;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 20px;
+      line-height: 1;
+      padding: 4px;
+      border-radius: 4px;
+    }
+    .modal-close:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+
+    .modal-body {
+      padding: 22px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-footer {
+      padding: 14px 22px;
+      background: #0d131f;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Key-Value Details Viewer */
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .details-table th, .details-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid #1c2638;
+      text-align: left;
+    }
+    .details-table th {
+      width: 35%;
+      color: #94a3b8;
+      font-weight: 600;
+      background: #0e1524;
+      text-transform: capitalize;
+    }
+    .details-table td {
+      color: #e2e8f0;
+      word-break: break-all;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    /* Toast Notifications */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 200;
+      pointer-events: none;
+    }
+    .toast {
+      min-width: 280px;
+      max-width: 400px;
+      background: #162032;
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      pointer-events: auto;
+      animation: toastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.2s ease;
+    }
+    .toast-success { border-left: 4px solid var(--success); }
+    .toast-error { border-left: 4px solid var(--danger); }
+    .toast-warning { border-left: 4px solid var(--warning); }
+    .toast-info { border-left: 4px solid var(--primary); }
+
+    /* Keyframes */
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+
+    /* Loading Spinner */
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================= -->
+  <!-- 1. LOGIN SCREEN -->
+  <!-- ========================================================================= -->
+  <div id="login-view">
+    <div class="login-card">
+      <div class="login-header">
+        <div style="display: flex; justify-content: center; margin-bottom: 12px;">
+          <div class="brand-logo" style="width: 44px; height: 44px; font-size: 22px;">S</div>
+        </div>
+        <h1>SCHOOL SYSTEM</h1>
+        <p>Integrated Administration & Daybook Portal</p>
+      </div>
+
+      <form id="login-form" class="login-body" onsubmit="handleLogin(event)">
+        <div class="input-group">
+          <label class="input-label" for="login-username">Username <span class="req">*</span></label>
+          <input type="text" id="login-username" class="input-control" placeholder="e.g. superadmin or uditya" required autofocus autocomplete="username">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="login-password">Password <span class="req">*</span></label>
+          <input type="password" id="login-password" class="input-control" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+
+        <div class="input-group" style="margin-bottom: 20px;">
+          <label class="input-label" for="api-base-url">API Base URL</label>
+          <input type="text" id="api-base-url" class="input-control font-mono" style="font-size: 12px;" value="http://127.0.0.1:8000">
+        </div>
+
+        <button type="submit" id="btn-login" class="btn btn-primary btn-lg" style="width: 100%;">
+          <span>Sign In to Dashboard</span>
+        </button>
+
+        <div id="login-error-box" class="hidden" style="margin-top: 14px; padding: 10px 14px; border-radius: var(--radius-sm); background: var(--danger-light); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; font-size: 13px;"></div>
+      </form>
+
+      <div class="login-footer">
+        <span>FastAPI + PostgreSQL Backend</span>
+        <span>Version 1.0.0</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- 2. MAIN APPLICATION WORKSPACE -->
+  <!-- ========================================================================= -->
+  <div id="app-view" class="hidden">
+    
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <div class="brand-section">
+        <div class="brand-logo">S</div>
+        <div>
+          <span class="brand-title">SCHOOL SYSTEM</span>
+          <span class="brand-tag">Management Hub</span>
+        </div>
+      </div>
+
+      <div class="user-section">
+        <div class="flex items-center gap-2">
+          <span style="color: var(--text-muted); font-size: 13px;">User:</span>
+          <strong id="header-username" style="color: #fff; font-size: 13px;"></strong>
+          <span id="header-role-badge" class="badge badge-role"></span>
+        </div>
+
+        <div style="height: 20px; width: 1px; background: var(--border);"></div>
+
+        <button class="btn btn-secondary btn-sm" onclick="openApiConfigModal()" title="Configure API Endpoint">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          <span>API Settings</span>
+        </button>
+
+        <button class="btn btn-secondary btn-sm" onclick="openChangePasswordModal()">
+          <span>Change Password</span>
+        </button>
+
+        <button class="btn btn-danger btn-sm" onclick="handleLogout()">
+          <span>Sign Out</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tab-bar">
+      <button class="tab-btn active" id="tab-btn-students" onclick="switchTab('students')">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+        <span>Students</span>
+      </button>
+
+      <button class="tab-btn" id="tab-btn-fees" onclick="switchTab('fees')">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z"></path></svg>
+        <span>Fees Management</span>
+      </button>
+
+      <button class="tab-btn" id="tab-btn-daybook" onclick="switchTab('daybook')">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span>Daybook Entries</span>
+      </button>
+
+      <button class="tab-btn" id="tab-btn-logs" onclick="switchTab('logs')">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        <span>Audit Logs</span>
+      </button>
+
+      <button class="tab-btn hidden" id="tab-btn-roles" onclick="switchTab('roles')">
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        <span>Roles & Users</span>
+      </button>
+    </nav>
+
+    <!-- Main Workspace Content Container -->
+    <main class="main-content">
+
+      <!-- ===================================================================== -->
+      <!-- TAB 1: STUDENTS -->
+      <!-- ===================================================================== -->
+      <section id="panel-students">
+        <div class="page-header">
+          <div class="page-title-box">
+            <h2>Student Enrollment & Records</h2>
+            <p>Query student profiles, verify documents, and link with fee sheets & daybook ledger.</p>
+          </div>
+          <div>
+            <button class="btn btn-success" onclick="openCreateStudentModal()">
+              <span>+ Add Student</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="toolbar-card">
+          <div class="filter-group">
+            <span style="font-size: 12px; font-weight: 600; color: var(--text-dim);">SEARCH:</span>
+            <input type="text" id="students-search-name" class="input-control" placeholder="Search by name..." style="width: 220px;" onkeydown="if(event.key==='Enter') searchStudentsByName()">
+            <button class="btn btn-primary" onclick="searchStudentsByName()">Search Name</button>
+            
+            <div style="width: 1px; height: 24px; background: var(--border); margin: 0 4px;"></div>
+
+            <input type="text" id="students-find-roll" class="input-control" placeholder="Roll No..." style="width: 150px;" onkeydown="if(event.key==='Enter') findStudentByRoll()">
+            <button class="btn btn-secondary" onclick="findStudentByRoll()">Find Roll No</button>
+            
+            <button class="btn btn-ghost btn-sm" onclick="clearStudentSearch()">Clear</button>
+          </div>
+          <div id="students-count-tag" style="font-size: 12px; color: var(--text-dim);">0 students listed</div>
+        </div>
+
+        <!-- Students Table -->
+        <div class="table-card">
+          <div class="table-container">
+            <table class="data-table" id="students-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">ID</th>
+                  <th>Roll No</th>
+                  <th>Name</th>
+                  <th>Father Name</th>
+                  <th>Class</th>
+                  <th>Status</th>
+                  <th>Verified By</th>
+                  <th>Created By</th>
+                  <th>Created At</th>
+                </tr>
+              </thead>
+              <tbody id="students-table-body">
+                <tr><td colspan="9" class="empty-state">Use the search boxes above to look up students by Name or Roll Number.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Bottom Action Bar -->
+          <div class="action-bar">
+            <div class="flex gap-2">
+              <button class="btn btn-secondary" onclick="viewSelectedStudentDetails()">View Details</button>
+              <button class="btn btn-primary" onclick="openEditStudentModal()">Edit Student</button>
+              <button class="btn btn-success" onclick="verifyStudentAction(true)">Verify</button>
+              <button class="btn btn-warning" onclick="verifyStudentAction(false)">Unverify</button>
+              <button class="btn btn-danger" onclick="deleteStudentAction()">Delete</button>
+            </div>
+            <div class="flex gap-2">
+              <button class="btn btn-secondary" onclick="jumpToFeesFromStudent()">View Fees &rarr;</button>
+              <button class="btn btn-secondary" onclick="jumpToDaybookFromStudent()">View Daybook &rarr;</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 2: FEES -->
+      <!-- ===================================================================== -->
+      <section id="panel-fees" class="hidden">
+        <div class="page-header">
+          <div class="page-title-box">
+            <h2>Fee Sheet Management</h2>
+            <p>Maintain installment sheets by Roll No and category (Tuition, Hostel, Bus, Exam, Other).</p>
+          </div>
+          <div>
+            <button class="btn btn-success" onclick="openAddFeeModal()">
+              <span>+ Add Fee Sheet</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="toolbar-card">
+          <div class="filter-group">
+            <span style="font-size: 12px; font-weight: 600; color: var(--text-dim);">LOOKUP ROLL NO:</span>
+            <input type="text" id="fees-filter-roll" class="input-control" placeholder="Enter student roll no..." style="width: 220px;" onkeydown="if(event.key==='Enter') loadFeesForRoll()">
+            <button class="btn btn-primary" onclick="loadFeesForRoll()">Load Fees</button>
+            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fees-filter-roll').value=''; renderFeesTable([])">Clear</button>
+          </div>
+          <div id="fees-count-tag" style="font-size: 12px; color: var(--text-dim);">0 fee sheets</div>
+        </div>
+
+        <!-- Fees Table -->
+        <div class="table-card">
+          <div class="table-container">
+            <table class="data-table" id="fees-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">ID</th>
+                  <th>Roll No</th>
+                  <th>Sheet Type</th>
+                  <th>Annual Fixed Amt</th>
+                  <th>Pending Amount</th>
+                  <th>Status</th>
+                  <th>Verified By</th>
+                  <th>Created By</th>
+                  <th>Created At</th>
+                </tr>
+              </thead>
+              <tbody id="fees-table-body">
+                <tr><td colspan="9" class="empty-state">Enter a student Roll Number above and click "Load Fees".</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Bottom Action Bar -->
+          <div class="action-bar">
+            <div class="flex gap-2">
+              <button class="btn btn-secondary" onclick="viewSelectedFeeDetails()">View Details</button>
+              <button class="btn btn-primary" onclick="openEditFeeModal()">Edit Fee</button>
+              <button class="btn btn-success" onclick="verifyFeeAction(true)">Verify</button>
+              <button class="btn btn-warning" onclick="verifyFeeAction(false)">Unverify</button>
+            </div>
+            <div>
+              <button class="btn btn-secondary" style="border-color: #3b82f6;" onclick="recordPaymentFromFee()">Record Payment in Daybook &rarr;</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 3: DAYBOOK -->
+      <!-- ===================================================================== -->
+      <section id="panel-daybook" class="hidden">
+        <div class="page-header">
+          <div class="page-title-box">
+            <h2>Daybook Entries & Transactions</h2>
+            <p>Track cash receipts, debits, amendments, and balance adjustments with audit tracking.</p>
+          </div>
+          <div>
+            <button class="btn btn-success" onclick="openAddDaybookModal()">
+              <span>+ New Daybook Entry</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Summary Totals -->
+        <div class="summary-grid">
+          <div class="summary-card">
+            <div class="summary-title">Total Receipts (Credit)</div>
+            <div class="summary-value val-credit" id="daybook-sum-credit">0.00</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-title">Total Payments (Debit)</div>
+            <div class="summary-value val-debit" id="daybook-sum-debit">0.00</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-title">Net Balance Position</div>
+            <div class="summary-value val-net" id="daybook-sum-net">0.00</div>
+          </div>
+          <div class="summary-card">
+            <div class="summary-title">Loaded Entries</div>
+            <div class="summary-value" id="daybook-sum-count" style="color: #fff;">0</div>
+          </div>
+        </div>
+
+        <!-- Filter & Pagination Toolbar -->
+        <div class="toolbar-card">
+          <div class="filter-group">
+            <span style="font-size: 12px; font-weight: 600; color: var(--text-dim);">FILTER ROLL NO:</span>
+            <input type="text" id="daybook-filter-roll" class="input-control" placeholder="All or Roll No..." style="width: 160px;" onkeydown="if(event.key==='Enter') { daybookOffset = 0; loadDaybook(); }">
+            <button class="btn btn-primary" onclick="daybookOffset = 0; loadDaybook();">Filter</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearDaybookFilter()">Clear</button>
+
+            <div style="width: 1px; height: 24px; background: var(--border); margin: 0 4px;"></div>
+
+            <span style="font-size: 12px; font-weight: 600; color: var(--text-dim);">LIMIT:</span>
+            <select id="daybook-limit-select" class="input-control" style="width: 80px;" onchange="daybookLimit = parseInt(this.value); daybookOffset = 0; loadDaybook();">
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="200">200</option>
+              <option value="500">500</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span id="daybook-page-info" style="font-size: 12px; color: var(--text-dim); margin-right: 6px;">Offset: 0</span>
+            <button class="btn btn-secondary btn-sm" onclick="daybookPrevPage()">&larr; Prev</button>
+            <button class="btn btn-secondary btn-sm" onclick="daybookNextPage()">Next &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Daybook Table -->
+        <div class="table-card">
+          <div class="table-container">
+            <table class="data-table" id="daybook-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">ID</th>
+                  <th>Date</th>
+                  <th>Voucher</th>
+                  <th>Challan</th>
+                  <th>Sheet Type</th>
+                  <th>Code</th>
+                  <th>Roll No</th>
+                  <th>Student Name</th>
+                  <th>Class</th>
+                  <th>Category</th>
+                  <th style="text-align: right;">Credit</th>
+                  <th style="text-align: right;">Debit</th>
+                  <th style="text-align: right;">Balance</th>
+                  <th style="text-align: right;">Fine</th>
+                  <th>Status</th>
+                  <th>Verified By</th>
+                  <th>Created By</th>
+                  <th>Amended By</th>
+                </tr>
+              </thead>
+              <tbody id="daybook-table-body">
+                <tr><td colspan="18" class="empty-state">Loading daybook records...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Bottom Action Bar -->
+          <div class="action-bar">
+            <div class="flex gap-2">
+              <button class="btn btn-secondary" onclick="viewSelectedDaybookDetails()">View Full Entry</button>
+              <button class="btn btn-primary" onclick="openEditDaybookModal(false)">Edit (Correction)</button>
+              <button class="btn btn-secondary" style="border-color: #0284c7; color: #38bdf8;" onclick="openEditDaybookModal(true)">Amend Entry</button>
+              <button class="btn btn-success" onclick="verifyDaybookAction(true)">Verify</button>
+              <button class="btn btn-warning" onclick="verifyDaybookAction(false)">Unverify</button>
+              <button class="btn btn-danger" id="daybook-btn-delete" onclick="deleteDaybookAction()">Delete Entry</button>
+            </div>
+            <div>
+              <button class="btn btn-ghost btn-sm" onclick="loadDaybook()">Refresh Daybook</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 4: AUDIT LOGS -->
+      <!-- ===================================================================== -->
+      <section id="panel-logs" class="hidden">
+        <div class="page-header">
+          <div class="page-title-box">
+            <h2>System Audit Logs</h2>
+            <p>Full operational history of security events, modifications, and administrative notes.</p>
+          </div>
+          <div>
+            <button class="btn btn-success" onclick="openAddLogModal()">
+              <span>+ Add Manual Log Note</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter & Pagination Toolbar -->
+        <div class="toolbar-card">
+          <div class="filter-group">
+            <button class="btn btn-primary" onclick="loadAuditLogs()">Refresh Logs</button>
+
+            <div style="width: 1px; height: 24px; background: var(--border); margin: 0 4px;"></div>
+
+            <span style="font-size: 12px; font-weight: 600; color: var(--text-dim);">LIMIT:</span>
+            <select id="logs-limit-select" class="input-control" style="width: 80px;" onchange="logsLimit = parseInt(this.value); logsOffset = 0; loadAuditLogs();">
+              <option value="50">50</option>
+              <option value="100" selected>100</option>
+              <option value="200">200</option>
+              <option value="500">500</option>
+            </select>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span id="logs-page-info" style="font-size: 12px; color: var(--text-dim); margin-right: 6px;">Offset: 0</span>
+            <button class="btn btn-secondary btn-sm" onclick="logsPrevPage()">&larr; Prev</button>
+            <button class="btn btn-secondary btn-sm" onclick="logsNextPage()">Next &rarr;</button>
+          </div>
+        </div>
+
+        <!-- Logs Table -->
+        <div class="table-card">
+          <div class="table-container">
+            <table class="data-table" id="logs-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">ID</th>
+                  <th>Username</th>
+                  <th>Role</th>
+                  <th>Action</th>
+                  <th>Details</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody id="logs-table-body">
+                <tr><td colspan="6" class="empty-state">Loading audit logs...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Bottom Action Bar -->
+          <div class="action-bar">
+            <div class="flex gap-2">
+              <button class="btn btn-secondary" onclick="viewSelectedLogDetails()">Inspect Log Details</button>
+            </div>
+            <div>
+              <span style="font-size: 12px; color: var(--text-dim);">Tip: Double-click any row to view complete JSON details</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 5: ROLES & USERS (SuperAdmin Only) -->
+      <!-- ===================================================================== -->
+      <section id="panel-roles" class="hidden">
+        <div class="page-header">
+          <div class="page-title-box">
+            <h2>User & Role Administration</h2>
+            <p>Restricted SuperAdmin panel for operators, staff roles, activations, and password resets.</p>
+          </div>
+          <div>
+            <button class="btn btn-success" onclick="openCreateUserModal()">
+              <span>+ Create User</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Toolbar -->
+        <div class="toolbar-card">
+          <div class="filter-group">
+            <button class="btn btn-primary" onclick="loadRoles()">Refresh Users</button>
+          </div>
+          <div id="roles-count-tag" style="font-size: 12px; color: var(--text-dim);">0 user accounts</div>
+        </div>
+
+        <!-- Roles Table -->
+        <div class="table-card">
+          <div class="table-container">
+            <table class="data-table" id="roles-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">ID</th>
+                  <th>Username</th>
+                  <th>Full Name</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Created At</th>
+                </tr>
+              </thead>
+              <tbody id="roles-table-body">
+                <tr><td colspan="6" class="empty-state">Loading users...</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Bottom Action Bar -->
+          <div class="action-bar">
+            <div class="flex gap-2">
+              <button class="btn btn-secondary" onclick="viewSelectedUserDetails()">View User Info</button>
+              <button class="btn btn-primary" onclick="openEditUserModal()">Edit User</button>
+              <button class="btn btn-warning" onclick="openResetUserPasswordModal()">Reset Password</button>
+              <button class="btn btn-danger" onclick="deleteUserAction()">Delete User</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer Status Bar -->
+    <footer class="status-bar">
+      <div>
+        <span class="status-indicator"></span>
+        <span id="status-text">Ready | Connected</span>
+      </div>
+      <div id="footer-api-url" class="font-mono">API: http://127.0.0.1:8000</div>
+    </footer>
+
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- MODALS CONTAINER (DYNAMICALLY MANAGED) -->
+  <!-- ========================================================================= -->
+  <div id="modal-root"></div>
+
+  <!-- Toast Notification Center -->
+  <div id="toast-container"></div>
+
+
+  <!-- ========================================================================= -->
+  <!-- 3. JAVASCRIPT APPLICATION LOGIC -->
+  <!-- ========================================================================= -->
+  <script>
+    // State Store
+    const state = {
+      apiUrl: localStorage.getItem('school_api_url') || 'http://127.0.0.1:8000',
+      token: localStorage.getItem('school_token') || null,
+      user: JSON.parse(localStorage.getItem('school_user') || 'null'),
+      activeTab: 'students',
+      
+      // Cached lists & selections
+      students: [],
+      selectedStudentId: null,
+      
+      fees: [],
+      selectedFeeIndex: null,
+      currentFeesRoll: '',
+
+      daybook: [],
+      selectedDaybookId: null,
+
+      logs: [],
+      selectedLogId: null,
+
+      roles: [],
+      selectedUsername: null,
+    };
+
+    let daybookOffset = 0;
+    let daybookLimit = 100;
+    let daybookRollFilter = '';
+
+    let logsOffset = 0;
+    let logsLimit = 100;
+
+    const FEE_SHEET_TYPES = [
+      "Tuition Fee",
+      "Hostel Fee",
+      "Bus Fee",
+      "Exam Fee",
+      "Other Fee"
+    ];
+
+    const ROLE_OPTIONS = [
+      "admin",
+      "super_admin",
+      "data_entry",
+      "staff"
+    ];
+
+    // ==========================================
+    // INITIALIZATION & AUTH CHECKS
+    // ==========================================
+    window.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('api-base-url').value = state.apiUrl;
+      document.getElementById('footer-api-url').textContent = `API: ${state.apiUrl}`;
+
+      if (state.token && state.user) {
+        showApp();
+      } else {
+        showLogin();
+      }
+    });
+
+    function showLogin() {
+      document.getElementById('login-view').classList.remove('hidden');
+      document.getElementById('app-view').classList.add('hidden');
+      document.getElementById('login-password').value = '';
+      document.getElementById('login-error-box').classList.add('hidden');
+    }
+
+    function showApp() {
+      document.getElementById('login-view').classList.add('hidden');
+      document.getElementById('app-view').classList.remove('hidden');
+      
+      document.getElementById('header-username').textContent = state.user.username;
+      const roleBadge = document.getElementById('header-role-badge');
+      roleBadge.textContent = state.user.role.toUpperCase();
+      if (state.user.role === 'super_admin') {
+        roleBadge.className = 'badge badge-role badge-role-super';
+      } else {
+        roleBadge.className = 'badge badge-role';
+      }
+
+      // Show/Hide SuperAdmin Roles tab
+      const rolesTabBtn = document.getElementById('tab-btn-roles');
+      const daybookDeleteBtn = document.getElementById('daybook-btn-delete');
+      if (isSuperAdmin()) {
+        rolesTabBtn.classList.remove('hidden');
+        if (daybookDeleteBtn) daybookDeleteBtn.classList.remove('hidden');
+      } else {
+        rolesTabBtn.classList.add('hidden');
+        if (daybookDeleteBtn) daybookDeleteBtn.classList.add('hidden');
+      }
+
+      switchTab(state.activeTab || 'students');
+      setStatus(`Connected as ${state.user.username} (${state.user.role})`);
+    }
+
+    function isAdmin() {
+      if (!state.user || !state.user.role) return false;
+      const r = state.user.role.toLowerCase();
+      return r === 'admin' || r === 'super_admin';
+    }
+
+    function isSuperAdmin() {
+      if (!state.user || !state.user.role) return false;
+      return state.user.role.toLowerCase() === 'super_admin';
+    }
+
+    function setStatus(msg) {
+      const el = document.getElementById('status-text');
+      if (el) el.textContent = msg;
+    }
+
+    // ==========================================
+    // HTTP API CLIENT (FETCH WRAPPER)
+    // ==========================================
+    async function apiRequest(method, path, data = null, customHeaders = {}) {
+      const headers = {
+        'Accept': 'application/json',
+        ...customHeaders
+      };
+
+      if (data && !(data instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+      }
+
+      if (state.token) {
+        headers['Authorization'] = `Bearer ${state.token}`;
+      }
+
+      const url = `${state.apiUrl.replace(/\/+$/, '')}${path}`;
+      const options = {
+        method: method.toUpperCase(),
+        headers
+      };
+
+      if (data) {
+        options.body = (data instanceof FormData) ? data : JSON.stringify(data);
+      }
+
+      try {
+        const response = await fetch(url, options);
+
+        if (response.status === 401) {
+          showToast('Session expired or unauthorized. Please re-login.', 'error');
+          handleLogout();
+          return null;
+        }
+
+        if (response.status === 204) {
+          return {};
+        }
+
+        const text = await response.text();
+        let payload = null;
+        try {
+          payload = text ? JSON.parse(text) : {};
+        } catch (e) {
+          payload = { raw: text };
+        }
+
+        if (!response.ok) {
+          const errMsg = payload.detail || payload.message || `Request failed with status ${response.status}`;
+          showToast(errMsg, 'error');
+          return null;
+        }
+
+        return payload;
+      } catch (err) {
+        console.error("API Fetch Error:", err);
+        showToast(`Network Error: Unable to connect to ${state.apiUrl}. Check CORS or server status.`, 'error');
+        return null;
+      }
+    }
+
+    // ==========================================
+    // AUTHENTICATION HANDLERS
+    // ==========================================
+    async function handleLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('login-username').value.trim();
+      const p = document.getElementById('login-password').value;
+      const customApi = document.getElementById('api-base-url').value.trim();
+
+      if (customApi) {
+        state.apiUrl = customApi;
+        localStorage.setItem('school_api_url', state.apiUrl);
+        document.getElementById('footer-api-url').textContent = `API: ${state.apiUrl}`;
+      }
+
+      const btn = document.getElementById('btn-login');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="spinner"></span> Signing in...`;
+
+      const errBox = document.getElementById('login-error-box');
+      errBox.classList.add('hidden');
+
+      const res = await apiRequest('POST', '/auth/login', { username: u, password: p });
+      btn.disabled = false;
+      btn.innerHTML = `<span>Sign In to Dashboard</span>`;
+
+      if (res && res.access_token) {
+        state.token = res.access_token;
+        state.user = {
+          username: res.username || u,
+          role: res.role || 'staff'
+        };
+
+        localStorage.setItem('school_token', state.token);
+        localStorage.setItem('school_user', JSON.stringify(state.user));
+        
+        showToast(`Welcome back, ${state.user.username}!`, 'success');
+        showApp();
+      } else {
+        errBox.textContent = "Login failed: verify your username, password, or API server connectivity.";
+        errBox.classList.remove('hidden');
+      }
+    }
+
+    function handleLogout() {
+      state.token = null;
+      state.user = null;
+      localStorage.removeItem('school_token');
+      localStorage.removeItem('school_user');
+      showLogin();
+      showToast('Logged out successfully', 'info');
+    }
+
+    function openChangePasswordModal() {
+      openFormModal({
+        title: `Change Password: ${state.user.username}`,
+        fields: [
+          { name: 'new_password', label: 'New Password (min 8 chars)', type: 'password', required: true },
+          { name: 'confirm_password', label: 'Confirm New Password', type: 'password', required: true }
+        ],
+        btnText: 'Update Password',
+        onSubmit: async (data) => {
+          if (data.new_password.length < 8) {
+            showToast('Password must be at least 8 characters long', 'warning');
+            return false;
+          }
+          if (data.new_password !== data.confirm_password) {
+            showToast('Passwords do not match', 'warning');
+            return false;
+          }
+
+          const res = await apiRequest('POST', `/roles/${state.user.username}/change-password`, {
+            new_password: data.new_password
+          });
+
+          if (res) {
+            showToast('Password changed successfully! Please log in again.', 'success');
+            handleLogout();
+            return true;
+          }
+          return false;
+        }
+      });
+    }
+
+    function openApiConfigModal() {
+      openFormModal({
+        title: 'Configure API Endpoint',
+        fields: [
+          { name: 'api_url', label: 'API Base URL', type: 'text', value: state.apiUrl, required: true }
+        ],
+        btnText: 'Save API URL',
+        onSubmit: (data) => {
+          let u = data.api_url.trim().replace(/\/+$/, '');
+          state.apiUrl = u;
+          localStorage.setItem('school_api_url', state.apiUrl);
+          document.getElementById('footer-api-url').textContent = `API: ${state.apiUrl}`;
+          showToast(`API URL set to: ${state.apiUrl}`, 'success');
+          return true;
+        }
+      });
+    }
+
+    // ==========================================
+    // NAVIGATION TABS
+    // ==========================================
+    function switchTab(tabName) {
+      state.activeTab = tabName;
+
+      ['students', 'fees', 'daybook', 'logs', 'roles'].forEach(t => {
+        const panel = document.getElementById(`panel-${t}`);
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (panel) panel.classList.toggle('hidden', t !== tabName);
+        if (btn) btn.classList.toggle('active', t !== tabName);
+      });
+
+      if (tabName === 'daybook') {
+        loadDaybook();
+      } else if (tabName === 'logs') {
+        loadAuditLogs();
+      } else if (tabName === 'roles') {
+        if (isSuperAdmin()) loadRoles();
+      }
+    }
+
+    // ==========================================
+    // 1. STUDENTS MODULE
+    // ==========================================
+    async function searchStudentsByName() {
+      const q = document.getElementById('students-search-name').value.trim();
+      if (!q) {
+        showToast('Please enter a name to search', 'warning');
+        return;
+      }
+      setStatus(`Searching students with name containing "${q}"...`);
+      const rows = await apiRequest('GET', `/students?name=${encodeURIComponent(q)}`);
+      if (rows) {
+        state.students = rows;
+        renderStudentsTable(rows);
+        setStatus(`Found ${rows.length} student(s) matching "${q}"`);
+      }
+    }
+
+    async function findStudentByRoll() {
+      const r = document.getElementById('students-find-roll').value.trim();
+      if (!r) {
+        showToast('Please enter a roll number to search', 'warning');
+        return;
+      }
+      setStatus(`Looking up roll number "${r}"...`);
+      const student = await apiRequest('GET', `/students/${encodeURIComponent(r)}`);
+      if (student) {
+        state.students = [student];
+        renderStudentsTable([student]);
+        setStatus(`Found student roll number: ${r}`);
+      }
+    }
+
+    function clearStudentSearch() {
+      document.getElementById('students-search-name').value = '';
+      document.getElementById('students-find-roll').value = '';
+      state.students = [];
+      renderStudentsTable([]);
+      setStatus('Ready');
+    }
+
+    function renderStudentsTable(rows) {
+      const tbody = document.getElementById('students-table-body');
+      const countTag = document.getElementById('students-count-tag');
+      countTag.textContent = `${rows.length} student(s) listed`;
+
+      if (!rows || rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="empty-state">No student records found. Search by name or roll number above.</td></tr>`;
+        state.selectedStudentId = null;
+        return;
+      }
+
+      tbody.innerHTML = rows.map((s, idx) => `
+        <tr data-id="${s.id}" data-roll="${s.roll_no}" class="${idx === 0 ? 'selected' : ''}" onclick="selectStudentRow(this, ${s.id})" ondblclick="viewSelectedStudentDetails()">
+          <td class="font-mono" style="color: var(--text-dim);">${s.id}</td>
+          <td><strong style="color: #60a5fa;">${escapeHtml(s.roll_no)}</strong></td>
+          <td><span style="font-weight: 600; color: #fff;">${escapeHtml(s.name)}</span></td>
+          <td>${escapeHtml(s.father_name || '—')}</td>
+          <td><span class="badge" style="background:#1e293b; color:#cbd5e1;">${escapeHtml(s.class || '—')}</span></td>
+          <td>
+            <span class="badge ${s.is_verified ? 'badge-verified' : 'badge-pending'}">
+              ${s.is_verified ? '✓ Verified' : 'Pending'}
+            </span>
+          </td>
+          <td>${escapeHtml(s.verified_by || '—')}</td>
+          <td>${escapeHtml(s.created_by || '—')}</td>
+          <td class="font-mono" style="font-size: 11px; color: var(--text-dim);">${escapeHtml(s.created_at || '—')}</td>
+        </tr>
+      `).join('');
+
+      state.selectedStudentId = rows[0].id;
+    }
+
+    function selectStudentRow(rowEl, id) {
+      document.querySelectorAll('#students-table-body tr').forEach(r => r.classList.remove('selected'));
+      rowEl.classList.add('selected');
+      state.selectedStudentId = id;
+    }
+
+    function getSelectedStudent() {
+      if (!state.selectedStudentId) {
+        showToast('Please select a student row first', 'warning');
+        return null;
+      }
+      return state.students.find(s => s.id === state.selectedStudentId);
+    }
+
+    function openCreateStudentModal() {
+      openFormModal({
+        title: 'Enroll New Student',
+        fields: [
+          { name: 'roll_no', label: 'Roll No', type: 'text', required: true },
+          { name: 'name', label: 'Student Name', type: 'text', required: true },
+          { name: 'father_name', label: 'Father Name', type: 'text', required: false },
+          { name: 'class', label: 'Class / Grade', type: 'text', required: false }
+        ],
+        btnText: 'Create Student Record',
+        onSubmit: async (data) => {
+          const res = await apiRequest('POST', '/students', {
+            roll_no: data.roll_no.trim(),
+            name: data.name.trim(),
+            father_name: data.father_name ? data.father_name.trim() : null,
+            class: data.class ? data.class.trim() : null
+          });
+
+          if (res) {
+            showToast(`Student ${data.name} enrolled successfully!`, 'success');
+            state.students = [res];
+            renderStudentsTable([res]);
+            return true;
+          }
+          return false;
+        }
+      });
+    }
+
+    function viewSelectedStudentDetails() {
+      const s = getSelectedStudent();
+      if (!s) return;
+      openDetailsModal(`Student Details: ${s.roll_no} - ${s.name}`, s);
+    }
+
+    function openEditStudentModal() {
+      const s = getSelectedStudent();
+      if (!s) return;
+
+      openFormModal({
+        title: `Edit Student: ${s.roll_no}`,
+        fields: [
+          { name: 'name', label: 'Student Name', type: 'text', value: s.name, required: true },
+          { name: 'father_name', label: 'Father Name', type: 'text', value: s.father_name || '', required: false },
+          { name: 'class', label: 'Class / Grade', type: 'text', value: s.class || '', required: false }
+        ],
+        btnText: 'Update Student',
+        onSubmit: async (data) => {
+          const res = await apiRequest('PUT', `/students/${encodeURIComponent(s.roll_no)}`, {
+            name: data.name.trim(),
+            father_name: data.father_name ? data.father_name.trim() : null,
+            class: data.class ? data.class.trim() : null
+          });
+
+          if (res) {
+            showToast(`Student ${s.roll_no} updated!`, 'success');
+            // update in state
+            const idx = state.students.findIndex(x => x.id === s.id);
+            if (idx >= 0) state.students[idx] = res;
+            renderStudentsTable(state.students);
+            return true;
+          }
+          return false;
+        }
+      });
+    }
+
+    async function verifyStudentAction(verify) {
+      const s = getSelectedStudent();
+      if (!s) return;
+
+      const act = verify ? 'verify' : 'unverify';
+      const res = await apiRequest('POST', `/students/${encodeURIComponent(s.roll_no)}/${act}`);
+      if (res) {
+        showToast(`Student ${s.roll_no} ${verify ? 'verified' : 'unverified'} successfully!`, 'success');
+        const idx = state.students.findIndex(x => x.id === s.id);
+        if (idx >= 0) state.students[idx] = res;
+        renderStudentsTable(state.students);
+      }
+    }
+
+    async function deleteStudentAction() {
+      const s = getSelectedStudent();
+      if (!s) return;
+
+      openConfirmModal({
+        title: 'Delete Student Record',
+        message: `Are you sure you want to delete Student Roll No "${s.roll_no}" (${s.name})?<br><br><span style="color: var(--danger); font-weight: 600;">Warning: All linked fee sheets will also be permanently deleted!</span>`,
+        confirmBtnText: 'Delete Student',
+        btnClass: 'btn-danger',
+        onConfirm: async () => {
+          const res = await apiRequest('DELETE', `/students/${encodeURIComponent(s.roll_no)}`);
+          if (res) {
+            showToast(`Student ${s.roll_no} deleted`, 'info');
+            state.students = state.students.filter(x => x.id !== s.id);
+            renderStudentsTable(state.students);
+          }
+        }
+      });
+    }
+
+    function jumpToFeesFromStudent() {
+      const s = getSelectedStudent();
+      if (!s) return;
+      document.getElementById('fees-filter-roll').value = s.roll_no;
+      switchTab('fees');
+      loadFeesForRoll();
+    }
+
+    function jumpToDaybookFromStudent() {
+      const s = getSelectedStudent();
+      if (!s) return;
+      document.getElementById('daybook-filter-roll').value = s.roll_no;
+      switchTab('daybook');
+      daybookOffset = 0;
+      loadDaybook();
+    }
+
+    // ==========================================
+    // 2. FEES MANAGEMENT MODULE
+    // ==========================================
+    async function loadFeesForRoll() {
+      const r = document.getElementById('fees-filter-roll').value.trim();
+      if (!r) {
+        showToast('Please enter a roll number to load fee records', 'warning');
+        return;
+      }
+      state.currentFeesRoll = r;
+      setStatus(`Loading fee records for student ${r}...`);
+      const rows = await apiRequest('GET', `/fees/${encodeURIComponent(r)}`);
+      if (rows) {
+        state.fees = rows;
+        renderFeesTable(rows);
+        setStatus(`Loaded ${rows.length} fee sheet(s) for roll ${r}`);
+      }
+    }
+
+    function renderFeesTable(rows) {
+      const tbody = document.getElementById('fees-table-body');
+      const countTag = document.getElementById('fees-count-tag');
+      countTag.textContent = `${rows.length} fee sheet(s)`;
+
+      if (!rows || rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="empty-state">No fee sheets found for roll "${state.currentFeesRoll || ''}". Click "+ Add Fee Sheet" to create one.</td></tr>`;
+        state.selectedFeeIndex = null;
+        return;
+      }
+
+      tbody.innerHTML = rows.map((f, idx) => `
+        <tr data-index="${idx}" class="${idx === 0 ? 'selected' : ''}" onclick="selectFeeRow(this, ${idx})" ondblclick="viewSelectedFeeDetails()">
+          <td class="font-mono" style="color: var(--text-dim);">${f.id}</td>
+          <td><strong style="color: #60a5fa;">${escapeHtml(f.roll_no)}</strong></td>
+          <td><span style="font-weight: 600; color: #fff;">${escapeHtml(f.sheet_type)}</span></td>
+          <td class="font-mono" style="color: #cbd5e1;">${formatMoney(f.fixed_installment)}</td>
+          <td class="font-mono" style="color: ${f.pending_installment > 0 ? '#f87171' : '#34d399'}; font-weight: 600;">
+            ${formatMoney(f.pending_installment)}
+          </td>
+          <td>
+            <span class="badge ${f.is_verified ? 'badge-verified' : 'badge-pending'}">
+              ${f.is_verified ? '✓ Verified' : 'Pending'}
+            </span>
+          </td>
+          <td>${escapeHtml(f.verified_by || '—')}</td>
+          <td>${escapeHtml(f.created_by || '—')}</td>
+          <td class="font-mono" style="font-size: 11px; color: var(--text-dim);">${escapeHtml(f.created_at || '—')}</td>
+        </tr>
+      `).join('');
+
+      state.selectedFeeIndex = 0;
+    }
+
+    function selectFeeRow(rowEl, idx) {
+      document.querySelectorAll('#fees-table-body tr').forEach(r => r.classList.remove('selected'));
+      rowEl.classList.add('selected');
+      state.selectedFeeIndex = idx;
+    }
+
+    function getSelectedFee() {
+      if (state.selectedFeeIndex === null || !state.fees[state.selectedFeeIndex]) {
+        showToast('Please select a fee sheet row first', 'warning');
+        return null;
+      }
+      return state.fees[state.selectedFeeIndex];
+    }
+
+    function openAddFeeModal() {
+      const defaultRoll = document.getElementById('fees-filter-roll').value.trim();
+      openFormModal({
+        title: 'Create New Fee Sheet',
+        fields: [
+          { name: 'roll_no', label: 'Roll No', type: 'text', value: defaultRoll, required: true },
+          { name: 'sheet_type', label: 'Sheet Type', type: 'select', options: FEE_SHEET_TYPES, value: 'Tuition Fee', required: true },
+          { name: 'fixed_installment', label: 'Annual Fixed Installment Amount', type: 'number', required: true },
+          { name: 'pending_installment', label: 'Initial Pending Amount (defaults to fixed)', type: 'number', required: false }
+        ],
+        btnText: 'Save Fee Sheet',
+        onSubmit: async (data) => {
+          const fixed = parseFloat(data.fixed_installment);
+          const pending = (data.pending_installment !== '' && data.pending_installment !== null) ? parseFloat(data.pending_installment) : fixed;
+
+          const res = await apiRequest('POST', '/fees', {
+            roll_no: data.roll_no.trim(),
+            sheet_type: data.sheet_type,
+            fixed_installment: fixed,
+            pending_installment: pending
+          });
+
+          if (res) {
+            showToast(`Fee sheet for ${data.sheet_type} added!`, 'success');
+            document.getElementById('fees-filter-roll').value = data.roll_no.trim();
+            loadFeesForRoll();
+            return true;
+          }
+          return false;
+        }
+      });
+    }
+
+    function viewSelectedFeeDetails() {
+      const f = getSelectedFee();
+      if (!f) return;
+      openDetailsModal(`Fee Sheet Details: ${f.roll_no} (${f.sheet_type})`, f);
+    }
+
+    function openEditFeeModal() {
+      const f = getSelectedFee();
+      if (!f) return;
+
+      openFormModal({
+        title: `Edit Fee Sheet: ${f.roll_no} - ${f.sheet_type}`,
+        fields: [
+          { name: 'fixed_installment', label: 'Annual Fixed Amount', type: 'number', value: f.fixed_installment, required: false },
+          { name: 'pending_installment', label: 'Pending Installment Amount', type: 'number', value: f.pending_installment, required: false }
+        ],
+        btnText: 'Update Amounts',
+        onSubmit: async (data) => {
+          const payload = {};
+          if (data.fixed_installment !== '') payload.fixed_installment = parseFloat(data.fixed_installment);
+          if (data.pending_installment !== '') payload.pending_installment = parseFloat(data.pending_installment);
+
+          if (Object.keys(payload).length === 0) {
+            showToast('No changes made', 'info');
+            return true;
+          }
+
+          const res = await apiRequest('PUT', `/fees/${encodeURIComponent(f.roll_no)}/${encodeURIComponent(f.sheet_type)}`, payload);
+          if (res) {
+            showToast('Fee amounts updated successfully!', 'success');
+            loadFeesForRoll();
+            return true;
+          }
+          return false;
+        }
+      });
+    }
+
+    async function verifyFeeAction(verify) {
+      const f = getSelectedFee();
+      if (!f) return;
+
+      const act = verify ? 'verify' : 'unverify';
+      const res = await apiRequest('POST', `/fees/${encodeURIComponent(f.roll_no)}/${encodeURIComponent(f.sheet_type)}/${act}`);
+      if (res) {
+        showToast(`Fee sheet ${f.sheet_type} ${verify ? 'verified' : 'unverified'}!`, 'success');
+        loadFeesForRoll();
+      }
+    }
+
+    function recordPaymentFromFee() {
+      const f = getSelectedFee();
+      if (!f) return;
+
+      document.getElementById('daybook-filter-roll').value = f.roll_no;
+      switchTab('daybook');
+
+      // Automatically launch Daybook entry creation modal pre-populated
+      openAddDaybookModal({
+        roll_no: f.roll_no,
+        sheet_type: f.sheet_type,
+        category: 'Fee Payment',
+        remarks: `Payment against ${f.sheet_type}`,
+        debit: f.pending_installment > 0 ? f.pending_installment : 0
+      });
+    }
+
+    // ==========================================
+    // 3. DAYBOOK ENTRIES MODULE
+    // ==========================================
+    async function loadDaybook() {
+      daybookRollFilter = document.getElementById('daybook-filter-roll').value.trim();
+      let query = `?limit=${daybookLimit}&offset=${daybookOffset}`;
+      if (daybookRollFilter) {
+        query += `&roll_no=${encodeURIComponent(daybookRollFilter)}`;
+      }
+
+      setStatus(`Loading daybook entries (offset: ${daybookOffset}, limit: ${daybookLimit})...`);
+      const rows = await apiRequest('GET', `/daybook${query}`);
+      if (rows) {
+        state.daybook = rows;
+        renderDaybookTable(rows);
+
+        // Compute totals for current loaded view
+        let totCredit = 0;
+        let totDebit = 0;
+        rows.forEach(r => {
+          totCredit += parseFloat(r.credit || 0);
+          totDebit += parseFloat(r.debit || 0);
+        });
+
+        document.getElementById('daybook-sum-credit').textContent = formatMoney(totCredit);
+        document.getElementById('daybook-sum-debit').textContent = formatMoney(totDebit);
+        document.getElementById('daybook-sum-net').textContent = formatMoney(totCredit - totDebit);
+        document.getElementById('daybook-sum-count').textContent = rows.length;
+        document.getElementById('daybook-page-info').textContent = `Showing ${rows.length} (Offset: ${daybookOffset})`;
+
+        setStatus(`Loaded ${rows.length} daybook record(s)`);
+      }
+    }
+
+    function renderDaybookTable(rows) {
+      const tbody = document.getElementById('daybook-table-body');
+      if (!rows || rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="18" class="empty-state">No daybook entries found matching the filter.</td></tr>`;
+        state.selectedDaybookId = null;
+        return;
+      }
+
+      tbody.innerHTML = rows.map((d, idx) => `
+        <tr data-id="${d.id}" class="${idx === 0 ? 'selected' : ''}" onclick="selectDaybookRow(this, ${d.id})" ondblclick="viewSelectedDaybookDetails()">
+          <td class="font-mono" style="color: var(--text-dim);">${d.id}</td>
+          <td class="font-mono">${escapeHtml(d.date || '—')}</td>
+          <td>${escapeHtml(d.voucher_no || '—')}</td>
+          <td>${escapeHtml(d.challan_no || '—')}</td>
+          <td><span class="badge" style="background: rgba(255,255,255,0.05); color:#93c5fd;">${escapeHtml(d.sheet_type || '—')}</span></td>
+          <td class="font-mono">${escapeHtml(d.code || '—')}</td>
+          <td><strong style="color: #60a5fa;">${escapeHtml(d.roll_no || '—')}</strong></td>
+          <td><span style="font-weight: 600; color: #fff;">${escapeHtml(d.student_name || '—')}</span></td>
+          <td>${escapeHtml(d.class || '—')}</td>
+          <td>${escapeHtml(d.category || '—')}</td>
+          <td class="font-mono" style="text-align: right; color: #34d399; font-weight: 600;">${formatMoney(d.credit)}</td>
+          <td class="font-mono" style="text-align: right; color: #f87171; font-weight: 600;">${formatMoney(d.debit)}</td>
+          <td class="font-mono" style="text-align: right; color: #93c5fd;">${formatMoney(d.balance)}</td>
+          <td class="font-mono" style="text-align: right; color: #fbbf24;">${formatMoney(d.fine)}</td>
+          <td>
+            <span class="badge ${d.is_verified ? 'badge-verified' : 'badge-pending'}">
+              ${d.is_verified ? '✓ Verified' : 'Pending'}
+            </span>
+          </td>
+          <td>${escapeHtml(d.verified_by || '—')}</td>
+          <td>${escapeHtml(d.created_by || '—')}</td>
+          <td class="font-mono" style="font-size: 11px; color: #a78bfa;">${escapeHtml(d.amended_by || '—')}</td>
+        </tr>
+      `).join('');
+
+      state.selectedDaybookId = rows[0].id;
+    }
+
+    function selectDaybookRow(rowEl, id) {
+      document.querySelectorAll('#daybook-table-body tr').forEach(r => r.classList.remove('selected'));
+      rowEl.classList.add('selected');
+      state.selectedDaybookId = id;
+    }
+
+    function getSelectedDaybook() {
+      if (!state.selectedDaybookId) {
+        showToast('Please select a daybook entry row first', 'warning');
+        return null;
+      }
+      return state.daybook.find(d => d.id === state.selectedDaybookId);
+    }
+
+    function clearDaybookFilter() {
+      document.getElementById('daybook-filter-roll').value = '';
+      daybookRollFilter = '';
+      daybookOffset = 0;
+      loadDaybook();
+    }
+
+    function daybookPrevPage() {
+      if (daybookOffset >= daybookLimit) {
+        daybookOffset -= daybookLimit;
+        loadDaybook();
+      }
+    }
+
+    function daybookNextPage() {
+      daybookOffset += daybookLimit;
+      loadDaybook();
+    }
+
+    function daybookFormFields(initial = {}) {
+      const today = new Date().toISOString().split('T')[0];
+      return [
+        { name: 'date', label: 'Date (YYYY-MM-DD)', type: 'date', value: initial.date || today, required: true },
+        { name: 'sheet_type', label: 'Sheet Type', type: 'select', options: FEE_SHEET_TYPES, value: initial.sheet_type || 'Tuition Fee', required: true },
+        { name: 'roll_no', label: 'Student Roll No', type: 'text', value: initial.roll_no || '', required: false },
+        { name: 'student_name', label: 'Student Name', type: 'text', value: initial.student_name || '', required: false },
+        { name: 'father_name', label: 'Father Name', type: 'text', value: initial.father_name || '', required: false },
+        { name: 'class', label: 'Class / Grade', type: 'text', value: initial.class || '', required: false },
+        { name: 'code', label: 'Account / Ledger Code', type: 'text', value: initial.code || '', required: false },
+        { name: 'category', label: 'Category / Purpose', type: 'text', value: initial.category || '', required: false },
+        { name: 'pending_fee_month', label: 'Pending Fee Month', type: 'text', value: initial.pending_fee_month || '', required: false },
+        { name: 'credit', label: 'Credit (Cash Receipt)', type: 'number', value: initial.credit !== undefined ? initial.credit : '0.0', required: false },
+        { name: 'debit', label: 'Debit (Payment / Fee Deduct)', type: 'number', value: initial.debit !== undefined ? initial.debit : '0.0', required: false },
+        { name: 'balance', label: 'Balance', type: 'number', value: initial.balance !== undefined ? initial.balance : '0.0', required: false },
+        { name: 'fine', label: 'Fine / Late Fee', type: 'number', value: initial.fine !== undefined ? initial.fine : '0.0', required: false },
+        { name: 'voucher_no', label: 'Voucher No', type: 'text', value: initial.voucher_no || '', required: false },
+        { name: 'challan_no', label: 'Challan No', type: 'text', value: initial.challan_no || '', required: false },
+        { name: 'remarks', label: 'Remarks / Notes', type: 'textarea', value: initial.remarks || '', required: false }
+      ];
+    }
+
+    function openAddDaybookModal(prefill = {}) {
+      openFormModal({
+        title: 'New Daybook Transaction Entry',
+        modalClass: 'modal-lg',
+        fields: daybookFormFields(prefill),
+        btnText: 'Submit Daybook Entry',
+        onSubmit: async (data) => {
+          const payload = {
+            date: data.date,
+            sheet_type: data.sheet_type || 'Tuition Fee',
+            roll_no: data.roll_no ? data.roll_no.trim() : null,
+            student_name: data.student_name ? data.student_name.trim() : null,
+            father_name: data.father_name ? data.father_name.trim() : null,
+            class: data.class ? data.class.trim() : null,
+            code: data.code ? data.code.trim() : null,
+            category: data.category ? data.category.trim() : null,
+            pending_fee_month: data.pending_fee_month ? data.pending_fee_month.trim() : null,
+            credit: parseFloat(data.credit || 0),
+            debit: parseFloat(data.debit || 0),
+            balance: parseFloat(data.balance || 0),
+            fine: parseFloat(data.fine || 0),
+            voucher_no: data.voucher_no ? data.voucher_no.trim() : null,
+            challan_no: data.challan_no ? data.challan_no.trim() : null,
+            remarks: data.remarks ? data.remarks.trim() : null
+          };
+
+          const res = await apiRequest('POST', '/daybook', payload);
+          if (res) {
+            showToast(`Daybook entry #${res.id} recorded successfully!`, 'success');
+            loadDaybook();
+            return true;
+          }
+          return false;
+        }
+      });
+    }
+
+    async function viewSelectedDaybookDetails() {
+      const d = getSelectedDaybook();
+      if (!d) return;
+
+      // Fetch fresh details from backend
+      const full = await apiRequest('GET', `/daybook/${d.id}`);
+      openDetailsModal(`Daybook Entry #${d.id} Full Details`, full || d);
+    }
+
+    async function openEditDaybookModal(isAmend) {
+      const d = getSelectedDaybook();
+      if (!d) return;
+
+      const full = await apiRequest('GET', `/daybook/${d.id}`) || d;
+      const title = isAmend ? `Amend Daybook Entry #${d.id}` : `Edit Daybook Entry #${d.id} (Correction)`;
+
+      openFormModal({
+        title,
+        modalClass: 'modal-lg',
+        fields: daybookFormFields(full),
+        btnText: isAmend ? 'Submit Amendment' : 'Save Correction',
+        onSubmit: async (data) => {
+          const payload = {};
+          ['date', 'sheet_type', 'code', 'roll_no', 'student_name', 'father_name', 'class', 'pending_fee_month', 'category', 'voucher_no', 'challan_no', 'remarks'].forEach(k => {
+            if (data[k] !== undefined) payload[k] = data[k] ? data[k].trim() : null;
+          });
+          ['credit', 'debit', 'balance', 'fine'].forEach(k => {
+            if (data[k] !== undefined && data[k] !== '') payload[k] = parseFloat(data[k]);
+          });
+
+          const path = isAmend ? `/daybook/${d.id}/amend` : `/daybook/${d.id}`;
+          const res = await apiRequest('PUT', path, payload);
+          if (res) {
+            showToast(`Daybook entry #${d.id} ${isAmend ? 'amended' : 'corrected'} successfully!`, 'success');
+            loadDaybook();
+            return true;
+          }
+          return false;
+        }
+      });
+    }
+
+    async function verifyDaybookAction(verify) {
+      const d = getSelectedDaybook();
+      if (!d) return;
+
+      const act = verify ? 'verify' : 'unverify';
+      const res = await apiRequest('POST', `/daybook/${d.id}/${act}`);
+      if (res) {
+        showToast(`Daybook entry #${d.id} ${verify ? 'verified' : 'unverified'}!`, 'success');
+        loadDaybook();
+      }
+    }
+
+    async function deleteDaybookAction() {
+      const d = getSelectedDaybook();
+      if (!d) return;
+
+      openConfirmModal({
+        title: `Delete Daybook Entry #${d.id}`,
+        message: `Are you sure you want to permanently delete Daybook entry #${d.id}?<br><br><span style="color: var(--danger); font-weight: 600;">(Restricted SuperAdmin Action: Pending installment adjustments will be rolled back!)</span>`,
+        confirmBtnText: 'Permanently Delete Entry',
+        btnClass: 'btn-danger',
+        onConfirm: async () => {
+          const res = await apiRequest('DELETE', `/daybook/${d.id}`);
+          if (res) {
+            showToast(`Daybook entry #${d.id} deleted`, 'info');
+            loadDaybook();
+          }
+        }
+      });
+    }
+
+    // ==========================================
+    // 4. AUDIT LOGS MODULE
+    // ==========================================
+    async function loadAuditLogs() {
+      setStatus(`Loading audit logs (offset: ${logsOffset}, limit: ${logsLimit})...`);
+      const rows = await apiRequest('GET', `/logs?limit=${logsLimit}&offset=${logsOffset}`);
+      if (rows) {
+        state.logs = rows;
+        renderLogsTable(rows);
+        document.getElementById('logs-page-info').textContent = `Showing ${rows.length} (Offset: ${logsOffset})`;
+        setStatus(`Loaded ${rows.length} audit log entries`);
+      }
+    }
+
+    function renderLogsTable(rows) {
+      const tbody = document.getElementById('logs-table-body');
+      if (!rows || rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No audit logs found.</td></tr>`;
+        state.selectedLogId = null;
+        return;
+      }
+
+      tbody.innerHTML = rows.map((l, idx) => `
+        <tr data-id="${l.id}" class="${idx === 0 ? 'selected' : ''}" onclick="selectLogRow(this, ${l.id})" ondblclick="viewSelectedLogDetails()">
+          <td class="font-mono" style="color: var(--text-dim);">${l.id}</td>
+          <td><strong style="color: #60a5fa;">${escapeHtml(l.username || '—')}</strong></td>
+          <td><span class="badge badge-role">${escapeHtml(l.role || '—')}</span></td>
+          <td><span style="font-weight: 600; color: #fff;">${escapeHtml(l.action)}</span></td>
+          <td class="font-mono truncate" style="max-width: 320px; font-size: 12px; color: #cbd5e1;">${escapeHtml(l.details || '—')}</td>
+          <td class="font-mono" style="font-size: 11px; color: var(--text-dim);">${escapeHtml(l.timestamp)}</td>
+        </tr>
+      `).join('');
+
+      state.selectedLogId = rows[0].id;
+    }
+
+    function selectLogRow(rowEl, id) {
+      document.querySelectorAll('#logs-table-body tr').forEach(r => r.classList.remove('selected'));
+      rowEl.classList.add('selected');
+      state.selectedLogId = id;
+    }
+
+    function getSelectedLog() {
+      if (!state.selectedLogId) {
+        showToast('Please select an audit log row first', 'warning');
+        return null;
+      }
+      return state.logs.find(l => l.id === state.selectedLogId);
+    }
+
+    function logsPrevPage() {
+      if (logsOffset >= logsLimit) {
+        logsOffset -= logsLimit;
+        loadAuditLogs();
+      }
+    }
+
+    function logsNextPage() {
+      logsOffset += logsLimit;
+      loadAuditLogs();
+    }
+
+    function openAddLogModal() {
+      openFormModal({
+        title: 'Post Manual Audit Log Entry',
+        fields: [
+          { name: 'action', label: 'Action / Event Name', type: 'text', required: true },
+          { name: 'details', label: 'Details / Operational Note', type: 'textarea', required: false }
+        ],
+        btnText: 'Submit Audit Log',
+        onSubmit: async (data) => {
+          const res = await apiRequest('POST', '/logs', {
+            action: data.action.trim(),
+            details: data.details ? data.details.trim() : null
+          });
+
+          if (res) {
+            showToast('Manual audit log created successfully!', 'success');
+            loadAuditLogs();
+            return true;
+          }
+          return false;
+        }
+      });
+    }
+
+    function viewSelectedLogDetails() {
+      const l = getSelectedLog();
+      if (!l) return;
+      openDetailsModal(`Audit Log #${l.id} - ${l.action}`, l);
+    }
+
+    // ==========================================
+    // 5. ROLES & USERS MODULE (SUPERADMIN)
+    // ==========================================
+    async function loadRoles() {
+      if (!isSuperAdmin()) return;
+      setStatus('Loading user accounts...');
+      const rows = await apiRequest('GET', '/roles');
+      if (rows) {
+        state.roles = rows;
+        renderRolesTable(rows);
+        setStatus(`Loaded ${rows.length} user accounts`);
+      }
+    }
+
+    function renderRolesTable(rows) {
+      const tbody = document.getElementById('roles-table-body');
+      const countTag = document.getElementById('roles-count-tag');
+      countTag.textContent = `${rows.length} user account(s)`;
+
+      if (!rows || rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No users found.</td></tr>`;
+        state.selectedUsername = null;
+        return;
+      }
+
+      tbody.innerHTML = rows.map((u, idx) => `
+        <tr data-username="${u.username}" class="${idx === 0 ? 'selected' : ''}" onclick="selectUserRow(this, '${escapeHtml(u.username)}')" ondblclick="viewSelectedUserDetails()">
+          <td class="font-mono" style="color: var(--text-dim);">${u.id}</td>
+          <td><strong style="color: #60a5fa;">${escapeHtml(u.username)}</strong></td>
+          <td><span style="font-weight: 600; color: #fff;">${escapeHtml(u.full_name)}</span></td>
+          <td>
+            <span class="badge ${u.role === 'super_admin' ? 'badge-role-super' : 'badge-role'}">
+              ${escapeHtml(u.role)}
+            </span>
+          </td>
+          <td>
+            <span class="badge ${u.is_active ? 'badge-active' : 'badge-inactive'}">
+              ${u.is_active ? 'Active' : 'Inactive'}
+            </span>
+          </td>
+          <td class="font-mono" style="font-size: 11px; color: var(--text-dim);">${escapeHtml(u.created_at)}</td>
+        </tr>
+      `).join('');
+
+      state.selectedUsername = rows[0].username;
+    }
+
+    function selectUserRow(rowEl, username) {
+      document.querySelectorAll('#roles-table-body tr').forEach(r => r.classList.remove('selected'));
+      rowEl.classList.add('selected');
+      state.selectedUsername = username;
+    }
+
+    function getSelectedUser() {
+      if (!state.selectedUsername) {
+        showToast('Please select a user account row first', 'warning');
+        return null;
+      }
+      return state.roles.find(u => u.username === state.selectedUsername);
+    }
+
+    function openCreateUserModal() {
+      openFormModal({
+        title: 'Create User & Assign System Role',
+        fields: [
+          { name: 'username', label: 'Username', type: 'text', required: true },
+          { name: 'full_name', label: 'Full Name', type: 'text', required: true },
+          { name: 'role', label: 'System Role', type: 'select', options: ROLE_OPTIONS, value: 'staff', required: true },
+          { name: 'password', label: 'Password (min 8 characters)', type: 'password', required: true },
+          { name: 'is_active', label: 'Account Active', type: 'checkbox', value: true }
+        ],
+        btnText: 'Create User Account',
+        onSubmit: async (data) => {
+          if (data.password.length < 8) {
+            showToast('Password must be at least 8 characters long', 'warning');
+            return false;
+          }
+
+          const res = await apiRequest('POST', '/roles', {
+            username: data.username.trim(),
+            password: data.password,
+            full_name: data.full_name.trim(),
+            role: data.role.trim().toLowerCase(),
+            is_active: Boolean(data.is_active)
+          });
+
+          if (res) {
+            showToast(`User account '${data.username}' created!`, 'success');
+            loadRoles();
+            return true;
+          }
+          return false;
+        }
+      });
+    }
+
+    async function viewSelectedUserDetails() {
+      const u = getSelectedUser();
+      if (!u) return;
+      const full = await apiRequest('GET', `/roles/${encodeURIComponent(u.username)}`) || u;
+      openDetailsModal(`User Account: ${u.username}`, full);
+    }
+
+    function openEditUserModal() {
+      const u = getSelectedUser();
+      if (!u) return;
+
+      openFormModal({
+        title: `Edit User: ${u.username}`,
+        fields: [
+          { name: 'full_name', label: 'Full Name', type: 'text', value: u.full_name, required: true },
+          { name: 'role', label: 'System Role', type: 'select', options: ROLE_OPTIONS, value: u.role, required: true },
+          { name: 'is_active', label: 'Account Active', type: 'checkbox', value: Boolean(u.is_active) }
+        ],
+        btnText: 'Update User Info',
+        onSubmit: async (data) => {
+          const res = await apiRequest('PUT', `/roles/${encodeURIComponent(u.username)}`, {
+            full_name: data.full_name.trim(),
+            role: data.role.trim().toLowerCase(),
+            is_active: Boolean(data.is_active)
+          });
+
+          if (res) {
+            showToast(`User account '${u.username}' updated!`, 'success');
+            loadRoles();
+            return true;
+          }
+          return false;
+        }
+      });
+    }
+
+    function openResetUserPasswordModal() {
+      const u = getSelectedUser();
+      if (!u) return;
+
+      openFormModal({
+        title: `Reset Password for '${u.username}'`,
+        fields: [
+          { name: 'new_password', label: 'New Password (min 8 chars)', type: 'password', required: true },
+          { name: 'confirm_password', label: 'Confirm Password', type: 'password', required: true }
+        ],
+        btnText: 'Save New Password',
+        onSubmit: async (data) => {
+          if (data.new_password.length < 8) {
+            showToast('Password must be at least 8 characters long', 'warning');
+            return false;
+          }
+          if (data.new_password !== data.confirm_password) {
+            showToast('Passwords do not match', 'warning');
+            return false;
+          }
+
+          const res = await apiRequest('POST', `/roles/${encodeURIComponent(u.username)}/change-password`, {
+            new_password: data.new_password
+          });
+
+          if (res) {
+            showToast(`Password updated for user '${u.username}'!`, 'success');
+            return true;
+          }
+          return false;
+        }
+      });
+    }
+
+    async function deleteUserAction() {
+      const u = getSelectedUser();
+      if (!u) return;
+
+      if (state.user && u.username === state.user.username) {
+        showToast('You cannot delete your own account while logged in.', 'error');
+        return;
+      }
+
+      openConfirmModal({
+        title: `Delete User: ${u.username}`,
+        message: `Are you sure you want to permanently delete user account "${u.username}" (${u.full_name})?`,
+        confirmBtnText: 'Delete User Account',
+        btnClass: 'btn-danger',
+        onConfirm: async () => {
+          const res = await apiRequest('DELETE', `/roles/${encodeURIComponent(u.username)}`);
+          if (res) {
+            showToast(`User account '${u.username}' deleted`, 'info');
+            loadRoles();
+          }
+        }
+      });
+    }
+
+
+    // ==========================================
+    // MODAL DIALOG ENGINE (REUSABLE)
+    // ==========================================
+    function closeModal() {
+      const root = document.getElementById('modal-root');
+      root.innerHTML = '';
+    }
+
+    function openDetailsModal(title, data) {
+      const root = document.getElementById('modal-root');
+      
+      const rowsHtml = Object.entries(data).map(([k, v]) => {
+        let valStr = '';
+        if (v === null || v === undefined) valStr = '<span style="color:var(--text-dim)">—</span>';
+        else if (typeof v === 'boolean') valStr = v ? '<span class="badge badge-success">Yes</span>' : '<span class="badge badge-danger">No</span>';
+        else if (typeof v === 'object') valStr = `<pre style="font-size:11px; white-space:pre-wrap;">${escapeHtml(JSON.stringify(v, null, 2))}</pre>`;
+        else valStr = escapeHtml(String(v));
+
+        return `
+          <tr>
+            <th>${escapeHtml(k.replace(/_/g, ' '))}</th>
+            <td>${valStr}</td>
+          </tr>
+        `;
+      }).join('');
+
+      root.innerHTML = `
+        <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+          <div class="modal-content modal-lg">
+            <div class="modal-header">
+              <h3>${escapeHtml(title)}</h3>
+              <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 0;">
+              <table class="details-table">
+                <tbody>${rowsHtml}</tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" onclick="copyDataAsJson(${escapeHtml(JSON.stringify(JSON.stringify(data)))})">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                <span>Copy JSON</span>
+              </button>
+              <button class="btn btn-primary" onclick="closeModal()">Close</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function copyDataAsJson(jsonStr) {
+      navigator.clipboard.writeText(jsonStr).then(() => {
+        showToast('Record copied to clipboard as JSON!', 'success');
+      }).catch(() => {
+        showToast('Clipboard write failed', 'error');
+      });
+    }
+
+    function openFormModal({ title, fields, btnText = 'Save', modalClass = '', onSubmit }) {
+      const root = document.getElementById('modal-root');
+
+      const fieldsHtml = fields.map(f => {
+        const reqAsterisk = f.required ? '<span class="req">*</span>' : '';
+        let inputHtml = '';
+
+        if (f.type === 'select') {
+          const opts = (f.options || []).map(opt => `
+            <option value="${escapeHtml(opt)}" ${opt === f.value ? 'selected' : ''}>${escapeHtml(opt)}</option>
+          `).join('');
+          inputHtml = `<select id="field-${f.name}" class="input-control" ${f.required ? 'required' : ''}>${opts}</select>`;
+        } else if (f.type === 'textarea') {
+          inputHtml = `<textarea id="field-${f.name}" class="input-control" placeholder="${f.placeholder || ''}" ${f.required ? 'required' : ''}>${escapeHtml(f.value || '')}</textarea>`;
+        } else if (f.type === 'checkbox') {
+          inputHtml = `
+            <label class="flex items-center gap-2" style="cursor: pointer; margin-top: 4px;">
+              <input type="checkbox" id="field-${f.name}" ${f.value ? 'checked' : ''} style="width: 16px; height: 16px; accent-color: var(--primary);">
+              <span style="font-size: 13px; color: #fff;">${escapeHtml(f.label)}</span>
+            </label>
+          `;
+          return `<div class="input-group">${inputHtml}</div>`;
+        } else {
+          inputHtml = `<input type="${f.type || 'text'}" id="field-${f.name}" class="input-control" value="${escapeHtml(f.value !== undefined ? String(f.value) : '')}" placeholder="${f.placeholder || ''}" ${f.required ? 'required' : ''}>`;
+        }
+
+        return `
+          <div class="input-group">
+            <label class="input-label" for="field-${f.name}">${escapeHtml(f.label)} ${reqAsterisk}</label>
+            ${inputHtml}
+          </div>
+        `;
+      }).join('');
+
+      root.innerHTML = `
+        <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+          <div class="modal-content ${modalClass}">
+            <div class="modal-header">
+              <h3>${escapeHtml(title)}</h3>
+              <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="generic-form-modal" onsubmit="event.preventDefault(); submitFormModal();">
+              <div class="modal-body">
+                ${fieldsHtml}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" id="generic-form-submit-btn" class="btn btn-success">${escapeHtml(btnText)}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+
+      window._currentFormSubmit = async () => {
+        const formData = {};
+        for (const f of fields) {
+          const el = document.getElementById(`field-${f.name}`);
+          if (!el) continue;
+
+          if (f.type === 'checkbox') {
+            formData[f.name] = el.checked;
+          } else {
+            formData[f.name] = el.value.trim();
+          }
+
+          if (f.required && (formData[f.name] === '' || formData[f.name] === null)) {
+            showToast(`Field '${f.label}' is required`, 'warning');
+            el.focus();
+            return;
+          }
+        }
+
+        const submitBtn = document.getElementById('generic-form-submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span class="spinner"></span> Processing...`;
+
+        const success = await onSubmit(formData);
+        if (success) {
+          closeModal();
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = escapeHtml(btnText);
+        }
+      };
+    }
+
+    function submitFormModal() {
+      if (typeof window._currentFormSubmit === 'function') {
+        window._currentFormSubmit();
+      }
+    }
+
+    function openConfirmModal({ title, message, confirmBtnText = 'Confirm', btnClass = 'btn-danger', onConfirm }) {
+      const root = document.getElementById('modal-root');
+      root.innerHTML = `
+        <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+          <div class="modal-content modal-sm">
+            <div class="modal-header">
+              <h3>${escapeHtml(title)}</h3>
+              <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="font-size: 14px; line-height: 1.5; color: #cbd5e1;">
+              ${message}
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+              <button class="btn ${btnClass}" id="confirm-modal-btn">${escapeHtml(confirmBtnText)}</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('confirm-modal-btn').onclick = async () => {
+        const btn = document.getElementById('confirm-modal-btn');
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner"></span> Working...`;
+        await onConfirm();
+        closeModal();
+      };
+    }
+
+    // ==========================================
+    // TOAST NOTIFICATION ENGINE
+    // ==========================================
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+
+      let icon = '';
+      if (type === 'success') {
+        icon = `<svg width="18" height="18" fill="none" stroke="#34d399" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"></path></svg>`;
+      } else if (type === 'error') {
+        icon = `<svg width="18" height="18" fill="none" stroke="#f87171" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+      } else if (type === 'warning') {
+        icon = `<svg width="18" height="18" fill="none" stroke="#fbbf24" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`;
+      } else {
+        icon = `<svg width="18" height="18" fill="none" stroke="#60a5fa" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+      }
+
+      toast.innerHTML = `
+        ${icon}
+        <div style="flex: 1; word-break: break-word;">${escapeHtml(String(message))}</div>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 200);
+      }, 4000);
+    }
+
+    // ==========================================
+    // UTILITY HELPERS
+    // ==========================================
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatMoney(val) {
+      const num = parseFloat(val);
+      if (isNaN(num)) return '0.00';
+      return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+  </script>
+</body>
+</html>
