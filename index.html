@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,10 @@
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+
   <style>
     :root {
       --bg: #0b0f19;
@@ -20,19 +23,19 @@
       --text: #f3f4f6;
       --text-muted: #9ca3af;
       --text-dim: #64748b;
-      
+
       --primary: #3b82f6;
       --primary-hover: #2563eb;
       --primary-light: rgba(59, 130, 246, 0.15);
-      
+
       --success: #10b981;
       --success-hover: #059669;
       --success-light: rgba(16, 185, 129, 0.15);
-      
+
       --warning: #f59e0b;
       --warning-hover: #d97706;
       --warning-light: rgba(245, 158, 11, 0.15);
-      
+
       --danger: #ef4444;
       --danger-hover: #dc2626;
       --danger-light: rgba(239, 68, 68, 0.15);
@@ -66,16 +69,48 @@
     }
 
     /* Common Utilities */
-    .hidden { display: none !important; }
-    .flex { display: flex; }
-    .flex-col { display: flex; flex-direction: column; }
-    .items-center { align-items: center; }
-    .justify-between { justify-content: space-between; }
-    .gap-2 { gap: 8px; }
-    .gap-3 { gap: 12px; }
-    .gap-4 { gap: 16px; }
-    .font-mono { font-family: var(--mono); }
-    .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .hidden {
+      display: none !important;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    .flex-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    .gap-2 {
+      gap: 8px;
+    }
+
+    .gap-3 {
+      gap: 12px;
+    }
+
+    .gap-4 {
+      gap: 16px;
+    }
+
+    .font-mono {
+      font-family: var(--mono);
+    }
+
+    .truncate {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
     /* Buttons */
     .btn {
@@ -95,27 +130,81 @@
       text-decoration: none;
       user-select: none;
     }
-    .btn:active { transform: scale(0.98); }
-    .btn-sm { padding: 4px 10px; font-size: 12px; border-radius: 4px; }
-    .btn-lg { padding: 12px 20px; font-size: 15px; border-radius: var(--radius); }
 
-    .btn-primary { background: var(--primary); color: #fff; }
-    .btn-primary:hover { background: var(--primary-hover); }
+    .btn:active {
+      transform: scale(0.98);
+    }
 
-    .btn-success { background: var(--success); color: #fff; }
-    .btn-success:hover { background: var(--success-hover); }
+    .btn-sm {
+      padding: 4px 10px;
+      font-size: 12px;
+      border-radius: 4px;
+    }
 
-    .btn-warning { background: var(--warning); color: #000; font-weight: 600; }
-    .btn-warning:hover { background: var(--warning-hover); color: #fff; }
+    .btn-lg {
+      padding: 12px 20px;
+      font-size: 15px;
+      border-radius: var(--radius);
+    }
 
-    .btn-danger { background: var(--danger); color: #fff; }
-    .btn-danger:hover { background: var(--danger-hover); }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
 
-    .btn-secondary { background: var(--card-alt); color: var(--text); border-color: var(--border); }
-    .btn-secondary:hover { background: #1e2d44; border-color: var(--border-focus); }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
 
-    .btn-ghost { background: transparent; color: var(--text-muted); }
-    .btn-ghost:hover { background: rgba(255, 255, 255, 0.05); color: var(--text); }
+    .btn-success {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .btn-success:hover {
+      background: var(--success-hover);
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: #000;
+      font-weight: 600;
+    }
+
+    .btn-warning:hover {
+      background: var(--warning-hover);
+      color: #fff;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background: var(--danger-hover);
+    }
+
+    .btn-secondary {
+      background: var(--card-alt);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #1e2d44;
+      border-color: var(--border-focus);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+    }
 
     /* Form Inputs */
     .input-group {
@@ -124,6 +213,7 @@
       gap: 5px;
       margin-bottom: 14px;
     }
+
     .input-label {
       font-size: 12px;
       font-weight: 600;
@@ -131,7 +221,11 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-    .input-label .req { color: var(--danger); margin-left: 2px; }
+
+    .input-label .req {
+      color: var(--danger);
+      margin-left: 2px;
+    }
 
     .input-control {
       width: 100%;
@@ -144,15 +238,26 @@
       font-family: var(--font);
       transition: all 0.15s;
     }
+
     .input-control:focus {
       outline: none;
       border-color: var(--border-focus);
       box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
       background: #111a2c;
     }
-    .input-control::placeholder { color: var(--text-dim); }
-    select.input-control { cursor: pointer; }
-    textarea.input-control { min-height: 80px; resize: vertical; }
+
+    .input-control::placeholder {
+      color: var(--text-dim);
+    }
+
+    select.input-control {
+      cursor: pointer;
+    }
+
+    textarea.input-control {
+      min-height: 80px;
+      resize: vertical;
+    }
 
     /* Badge Tags */
     .badge {
@@ -166,26 +271,35 @@
       letter-spacing: 0.3px;
       text-transform: uppercase;
     }
-    .badge-verified, .badge-active, .badge-success {
+
+    .badge-verified,
+    .badge-active,
+    .badge-success {
       background: var(--success-light);
       color: #34d399;
       border: 1px solid rgba(16, 185, 129, 0.3);
     }
-    .badge-pending, .badge-warning {
+
+    .badge-pending,
+    .badge-warning {
       background: var(--warning-light);
       color: #fbbf24;
       border: 1px solid rgba(245, 158, 11, 0.3);
     }
-    .badge-inactive, .badge-danger {
+
+    .badge-inactive,
+    .badge-danger {
       background: var(--danger-light);
       color: #f87171;
       border: 1px solid rgba(239, 68, 68, 0.3);
     }
+
     .badge-role {
       background: #1e293b;
       color: #93c5fd;
       border: 1px solid #334155;
     }
+
     .badge-role-super {
       background: rgba(168, 85, 247, 0.2);
       color: #c084fc;
@@ -219,6 +333,7 @@
       border-bottom: 1px solid var(--border);
       text-align: center;
     }
+
     .login-header h1 {
       font-size: 22px;
       font-weight: 800;
@@ -228,6 +343,7 @@
       -webkit-text-fill-color: transparent;
       margin-bottom: 6px;
     }
+
     .login-header p {
       font-size: 13px;
       color: var(--text-muted);
@@ -274,6 +390,7 @@
       align-items: center;
       gap: 12px;
     }
+
     .brand-logo {
       width: 34px;
       height: 34px;
@@ -287,12 +404,14 @@
       font-size: 18px;
       box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
     }
+
     .brand-title {
       font-size: 16px;
       font-weight: 700;
       letter-spacing: 0.3px;
       color: #fff;
     }
+
     .brand-tag {
       font-size: 11px;
       color: var(--text-dim);
@@ -315,6 +434,7 @@
       gap: 4px;
       overflow-x: auto;
     }
+
     .tab-btn {
       padding: 13px 18px;
       font-size: 13px;
@@ -330,10 +450,12 @@
       transition: all 0.15s;
       white-space: nowrap;
     }
+
     .tab-btn:hover {
       color: var(--text);
       background: rgba(255, 255, 255, 0.02);
     }
+
     .tab-btn.active {
       color: #60a5fa;
       border-bottom-color: #3b82f6;
@@ -357,6 +479,7 @@
       gap: 16px;
       flex-wrap: wrap;
     }
+
     .page-title-box h2 {
       font-size: 20px;
       font-weight: 700;
@@ -365,6 +488,7 @@
       align-items: center;
       gap: 10px;
     }
+
     .page-title-box p {
       font-size: 13px;
       color: var(--text-muted);
@@ -384,6 +508,7 @@
       gap: 14px;
       flex-wrap: wrap;
     }
+
     .filter-group {
       display: flex;
       align-items: center;
@@ -440,6 +565,7 @@
       background: #172235;
       cursor: pointer;
     }
+
     table.data-table tr.selected td {
       background: rgba(59, 130, 246, 0.18);
       border-bottom-color: rgba(59, 130, 246, 0.3);
@@ -450,17 +576,20 @@
       text-align: center;
       color: var(--text-dim);
     }
+
     .empty-state svg {
       width: 48px;
       height: 48px;
       margin-bottom: 12px;
       opacity: 0.4;
     }
+
     .empty-state h4 {
       font-size: 15px;
       color: var(--text-muted);
       margin-bottom: 6px;
     }
+
     .empty-state p {
       font-size: 12px;
     }
@@ -484,12 +613,14 @@
       gap: 14px;
       margin-bottom: 16px;
     }
+
     .summary-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 14px 18px;
     }
+
     .summary-title {
       font-size: 11px;
       text-transform: uppercase;
@@ -497,15 +628,25 @@
       color: var(--text-dim);
       font-weight: 600;
     }
+
     .summary-value {
       font-size: 22px;
       font-weight: 700;
       margin-top: 4px;
       font-family: var(--mono);
     }
-    .val-credit { color: #34d399; }
-    .val-debit { color: #f87171; }
-    .val-net { color: #60a5fa; }
+
+    .val-credit {
+      color: #34d399;
+    }
+
+    .val-debit {
+      color: #f87171;
+    }
+
+    .val-net {
+      color: #60a5fa;
+    }
 
     /* Footer Status Bar */
     .status-bar {
@@ -518,6 +659,7 @@
       align-items: center;
       justify-content: space-between;
     }
+
     .status-indicator {
       display: inline-block;
       width: 8px;
@@ -540,6 +682,7 @@
       padding: 20px;
       animation: fadeIn 0.15s ease-out;
     }
+
     .modal-content {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -553,8 +696,14 @@
       overflow: hidden;
       animation: slideUp 0.2s ease-out;
     }
-    .modal-content.modal-lg { max-width: 800px; }
-    .modal-content.modal-sm { max-width: 420px; }
+
+    .modal-content.modal-lg {
+      max-width: 800px;
+    }
+
+    .modal-content.modal-sm {
+      max-width: 420px;
+    }
 
     .modal-header {
       padding: 16px 22px;
@@ -564,11 +713,13 @@
       align-items: center;
       justify-content: space-between;
     }
+
     .modal-header h3 {
       font-size: 16px;
       font-weight: 700;
       color: #fff;
     }
+
     .modal-close {
       background: transparent;
       border: none;
@@ -579,7 +730,11 @@
       padding: 4px;
       border-radius: 4px;
     }
-    .modal-close:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+
+    .modal-close:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
 
     .modal-body {
       padding: 22px;
@@ -603,11 +758,14 @@
       border-collapse: collapse;
       font-size: 13px;
     }
-    .details-table th, .details-table td {
+
+    .details-table th,
+    .details-table td {
       padding: 9px 12px;
       border-bottom: 1px solid #1c2638;
       text-align: left;
     }
+
     .details-table th {
       width: 35%;
       color: #94a3b8;
@@ -615,6 +773,7 @@
       background: #0e1524;
       text-transform: capitalize;
     }
+
     .details-table td {
       color: #e2e8f0;
       word-break: break-all;
@@ -633,6 +792,7 @@
       z-index: 200;
       pointer-events: none;
     }
+
     .toast {
       min-width: 280px;
       max-width: 400px;
@@ -650,15 +810,57 @@
       animation: toastIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       transition: all 0.2s ease;
     }
-    .toast-success { border-left: 4px solid var(--success); }
-    .toast-error { border-left: 4px solid var(--danger); }
-    .toast-warning { border-left: 4px solid var(--warning); }
-    .toast-info { border-left: 4px solid var(--primary); }
+
+    .toast-success {
+      border-left: 4px solid var(--success);
+    }
+
+    .toast-error {
+      border-left: 4px solid var(--danger);
+    }
+
+    .toast-warning {
+      border-left: 4px solid var(--warning);
+    }
+
+    .toast-info {
+      border-left: 4px solid var(--primary);
+    }
 
     /* Keyframes */
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes toastIn {
+      from {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
 
     /* Loading Spinner */
     .spinner {
@@ -670,9 +872,15 @@
       border-top-color: #fff;
       animation: spin 0.8s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
+
 <body>
 
   <!-- ========================================================================= -->
@@ -691,24 +899,29 @@
       <form id="login-form" class="login-body" onsubmit="handleLogin(event)">
         <div class="input-group">
           <label class="input-label" for="login-username">Username <span class="req">*</span></label>
-          <input type="text" id="login-username" class="input-control" placeholder="e.g. superadmin or uditya" required autofocus autocomplete="username">
+          <input type="text" id="login-username" class="input-control" placeholder="e.g. superadmin or uditya" required
+            autofocus autocomplete="username">
         </div>
 
         <div class="input-group">
           <label class="input-label" for="login-password">Password <span class="req">*</span></label>
-          <input type="password" id="login-password" class="input-control" placeholder="••••••••" required autocomplete="current-password">
+          <input type="password" id="login-password" class="input-control" placeholder="••••••••" required
+            autocomplete="current-password">
         </div>
 
         <div class="input-group" style="margin-bottom: 20px;">
           <label class="input-label" for="api-base-url">API Base URL</label>
-          <input type="text" id="api-base-url" class="input-control font-mono" style="font-size: 12px;" value="http://127.0.0.1:8000">
+          <input type="text" id="api-base-url" class="input-control font-mono" style="font-size: 12px;"
+            value="https://school-system-n9wt.onrender.com/">
         </div>
 
         <button type="submit" id="btn-login" class="btn btn-primary btn-lg" style="width: 100%;">
           <span>Sign In to Dashboard</span>
         </button>
 
-        <div id="login-error-box" class="hidden" style="margin-top: 14px; padding: 10px 14px; border-radius: var(--radius-sm); background: var(--danger-light); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; font-size: 13px;"></div>
+        <div id="login-error-box" class="hidden"
+          style="margin-top: 14px; padding: 10px 14px; border-radius: var(--radius-sm); background: var(--danger-light); border: 1px solid rgba(239, 68, 68, 0.3); color: #fca5a5; font-size: 13px;">
+        </div>
       </form>
 
       <div class="login-footer">
@@ -723,7 +936,7 @@
   <!-- 2. MAIN APPLICATION WORKSPACE -->
   <!-- ========================================================================= -->
   <div id="app-view" class="hidden">
-    
+
     <!-- Top Navigation -->
     <header class="top-nav">
       <div class="brand-section">
@@ -744,7 +957,12 @@
         <div style="height: 20px; width: 1px; background: var(--border);"></div>
 
         <button class="btn btn-secondary btn-sm" onclick="openApiConfigModal()" title="Configure API Endpoint">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+            </path>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
           <span>API Settings</span>
         </button>
 
@@ -761,27 +979,47 @@
     <!-- Navigation Tabs -->
     <nav class="tab-bar">
       <button class="tab-btn active" id="tab-btn-students" onclick="switchTab('students')">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+          </path>
+        </svg>
         <span>Students</span>
       </button>
 
       <button class="tab-btn" id="tab-btn-fees" onclick="switchTab('fees')">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z"></path></svg>
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z">
+          </path>
+        </svg>
         <span>Fees Management</span>
       </button>
 
       <button class="tab-btn" id="tab-btn-daybook" onclick="switchTab('daybook')">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+          </path>
+        </svg>
         <span>Daybook Entries</span>
       </button>
 
       <button class="tab-btn" id="tab-btn-logs" onclick="switchTab('logs')">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+          </path>
+        </svg>
         <span>Audit Logs</span>
       </button>
 
       <button class="tab-btn hidden" id="tab-btn-roles" onclick="switchTab('roles')">
-        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+          </path>
+        </svg>
         <span>Roles & Users</span>
       </button>
     </nav>
@@ -809,14 +1047,16 @@
         <div class="toolbar-card">
           <div class="filter-group">
             <span style="font-size: 12px; font-weight: 600; color: var(--text-dim);">SEARCH:</span>
-            <input type="text" id="students-search-name" class="input-control" placeholder="Search by name..." style="width: 220px;" onkeydown="if(event.key==='Enter') searchStudentsByName()">
+            <input type="text" id="students-search-name" class="input-control" placeholder="Search by name..."
+              style="width: 220px;" onkeydown="if(event.key==='Enter') searchStudentsByName()">
             <button class="btn btn-primary" onclick="searchStudentsByName()">Search Name</button>
-            
+
             <div style="width: 1px; height: 24px; background: var(--border); margin: 0 4px;"></div>
 
-            <input type="text" id="students-find-roll" class="input-control" placeholder="Roll No..." style="width: 150px;" onkeydown="if(event.key==='Enter') findStudentByRoll()">
+            <input type="text" id="students-find-roll" class="input-control" placeholder="Roll No..."
+              style="width: 150px;" onkeydown="if(event.key==='Enter') findStudentByRoll()">
             <button class="btn btn-secondary" onclick="findStudentByRoll()">Find Roll No</button>
-            
+
             <button class="btn btn-ghost btn-sm" onclick="clearStudentSearch()">Clear</button>
           </div>
           <div id="students-count-tag" style="font-size: 12px; color: var(--text-dim);">0 students listed</div>
@@ -840,7 +1080,10 @@
                 </tr>
               </thead>
               <tbody id="students-table-body">
-                <tr><td colspan="9" class="empty-state">Use the search boxes above to look up students by Name or Roll Number.</td></tr>
+                <tr>
+                  <td colspan="9" class="empty-state">Use the search boxes above to look up students by Name or Roll
+                    Number.</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -882,9 +1125,11 @@
         <div class="toolbar-card">
           <div class="filter-group">
             <span style="font-size: 12px; font-weight: 600; color: var(--text-dim);">LOOKUP ROLL NO:</span>
-            <input type="text" id="fees-filter-roll" class="input-control" placeholder="Enter student roll no..." style="width: 220px;" onkeydown="if(event.key==='Enter') loadFeesForRoll()">
+            <input type="text" id="fees-filter-roll" class="input-control" placeholder="Enter student roll no..."
+              style="width: 220px;" onkeydown="if(event.key==='Enter') loadFeesForRoll()">
             <button class="btn btn-primary" onclick="loadFeesForRoll()">Load Fees</button>
-            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('fees-filter-roll').value=''; renderFeesTable([])">Clear</button>
+            <button class="btn btn-ghost btn-sm"
+              onclick="document.getElementById('fees-filter-roll').value=''; renderFeesTable([])">Clear</button>
           </div>
           <div id="fees-count-tag" style="font-size: 12px; color: var(--text-dim);">0 fee sheets</div>
         </div>
@@ -907,7 +1152,9 @@
                 </tr>
               </thead>
               <tbody id="fees-table-body">
-                <tr><td colspan="9" class="empty-state">Enter a student Roll Number above and click "Load Fees".</td></tr>
+                <tr>
+                  <td colspan="9" class="empty-state">Enter a student Roll Number above and click "Load Fees".</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -921,7 +1168,8 @@
               <button class="btn btn-warning" onclick="verifyFeeAction(false)">Unverify</button>
             </div>
             <div>
-              <button class="btn btn-secondary" style="border-color: #3b82f6;" onclick="recordPaymentFromFee()">Record Payment in Daybook &rarr;</button>
+              <button class="btn btn-secondary" style="border-color: #3b82f6;" onclick="recordPaymentFromFee()">Record
+                Payment in Daybook &rarr;</button>
             </div>
           </div>
         </div>
@@ -967,14 +1215,16 @@
         <div class="toolbar-card">
           <div class="filter-group">
             <span style="font-size: 12px; font-weight: 600; color: var(--text-dim);">FILTER ROLL NO:</span>
-            <input type="text" id="daybook-filter-roll" class="input-control" placeholder="All or Roll No..." style="width: 160px;" onkeydown="if(event.key==='Enter') { daybookOffset = 0; loadDaybook(); }">
+            <input type="text" id="daybook-filter-roll" class="input-control" placeholder="All or Roll No..."
+              style="width: 160px;" onkeydown="if(event.key==='Enter') { daybookOffset = 0; loadDaybook(); }">
             <button class="btn btn-primary" onclick="daybookOffset = 0; loadDaybook();">Filter</button>
             <button class="btn btn-ghost btn-sm" onclick="clearDaybookFilter()">Clear</button>
 
             <div style="width: 1px; height: 24px; background: var(--border); margin: 0 4px;"></div>
 
             <span style="font-size: 12px; font-weight: 600; color: var(--text-dim);">LIMIT:</span>
-            <select id="daybook-limit-select" class="input-control" style="width: 80px;" onchange="daybookLimit = parseInt(this.value); daybookOffset = 0; loadDaybook();">
+            <select id="daybook-limit-select" class="input-control" style="width: 80px;"
+              onchange="daybookLimit = parseInt(this.value); daybookOffset = 0; loadDaybook();">
               <option value="50">50</option>
               <option value="100" selected>100</option>
               <option value="200">200</option>
@@ -983,7 +1233,8 @@
           </div>
 
           <div class="flex items-center gap-2">
-            <span id="daybook-page-info" style="font-size: 12px; color: var(--text-dim); margin-right: 6px;">Offset: 0</span>
+            <span id="daybook-page-info" style="font-size: 12px; color: var(--text-dim); margin-right: 6px;">Offset:
+              0</span>
             <button class="btn btn-secondary btn-sm" onclick="daybookPrevPage()">&larr; Prev</button>
             <button class="btn btn-secondary btn-sm" onclick="daybookNextPage()">Next &rarr;</button>
           </div>
@@ -1016,7 +1267,9 @@
                 </tr>
               </thead>
               <tbody id="daybook-table-body">
-                <tr><td colspan="18" class="empty-state">Loading daybook records...</td></tr>
+                <tr>
+                  <td colspan="18" class="empty-state">Loading daybook records...</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -1026,10 +1279,12 @@
             <div class="flex gap-2">
               <button class="btn btn-secondary" onclick="viewSelectedDaybookDetails()">View Full Entry</button>
               <button class="btn btn-primary" onclick="openEditDaybookModal(false)">Edit (Correction)</button>
-              <button class="btn btn-secondary" style="border-color: #0284c7; color: #38bdf8;" onclick="openEditDaybookModal(true)">Amend Entry</button>
+              <button class="btn btn-secondary" style="border-color: #0284c7; color: #38bdf8;"
+                onclick="openEditDaybookModal(true)">Amend Entry</button>
               <button class="btn btn-success" onclick="verifyDaybookAction(true)">Verify</button>
               <button class="btn btn-warning" onclick="verifyDaybookAction(false)">Unverify</button>
-              <button class="btn btn-danger" id="daybook-btn-delete" onclick="deleteDaybookAction()">Delete Entry</button>
+              <button class="btn btn-danger" id="daybook-btn-delete" onclick="deleteDaybookAction()">Delete
+                Entry</button>
             </div>
             <div>
               <button class="btn btn-ghost btn-sm" onclick="loadDaybook()">Refresh Daybook</button>
@@ -1062,7 +1317,8 @@
             <div style="width: 1px; height: 24px; background: var(--border); margin: 0 4px;"></div>
 
             <span style="font-size: 12px; font-weight: 600; color: var(--text-dim);">LIMIT:</span>
-            <select id="logs-limit-select" class="input-control" style="width: 80px;" onchange="logsLimit = parseInt(this.value); logsOffset = 0; loadAuditLogs();">
+            <select id="logs-limit-select" class="input-control" style="width: 80px;"
+              onchange="logsLimit = parseInt(this.value); logsOffset = 0; loadAuditLogs();">
               <option value="50">50</option>
               <option value="100" selected>100</option>
               <option value="200">200</option>
@@ -1071,7 +1327,8 @@
           </div>
 
           <div class="flex items-center gap-2">
-            <span id="logs-page-info" style="font-size: 12px; color: var(--text-dim); margin-right: 6px;">Offset: 0</span>
+            <span id="logs-page-info" style="font-size: 12px; color: var(--text-dim); margin-right: 6px;">Offset:
+              0</span>
             <button class="btn btn-secondary btn-sm" onclick="logsPrevPage()">&larr; Prev</button>
             <button class="btn btn-secondary btn-sm" onclick="logsNextPage()">Next &rarr;</button>
           </div>
@@ -1092,7 +1349,9 @@
                 </tr>
               </thead>
               <tbody id="logs-table-body">
-                <tr><td colspan="6" class="empty-state">Loading audit logs...</td></tr>
+                <tr>
+                  <td colspan="6" class="empty-state">Loading audit logs...</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -1103,7 +1362,8 @@
               <button class="btn btn-secondary" onclick="viewSelectedLogDetails()">Inspect Log Details</button>
             </div>
             <div>
-              <span style="font-size: 12px; color: var(--text-dim);">Tip: Double-click any row to view complete JSON details</span>
+              <span style="font-size: 12px; color: var(--text-dim);">Tip: Double-click any row to view complete JSON
+                details</span>
             </div>
           </div>
         </div>
@@ -1148,7 +1408,9 @@
                 </tr>
               </thead>
               <tbody id="roles-table-body">
-                <tr><td colspan="6" class="empty-state">Loading users...</td></tr>
+                <tr>
+                  <td colspan="6" class="empty-state">Loading users...</td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -1198,11 +1460,11 @@
       token: localStorage.getItem('school_token') || null,
       user: JSON.parse(localStorage.getItem('school_user') || 'null'),
       activeTab: 'students',
-      
+
       // Cached lists & selections
       students: [],
       selectedStudentId: null,
-      
+
       fees: [],
       selectedFeeIndex: null,
       currentFeesRoll: '',
@@ -1263,7 +1525,7 @@
     function showApp() {
       document.getElementById('login-view').classList.add('hidden');
       document.getElementById('app-view').classList.remove('hidden');
-      
+
       document.getElementById('header-username').textContent = state.user.username;
       const roleBadge = document.getElementById('header-role-badge');
       roleBadge.textContent = state.user.role.toUpperCase();
@@ -1401,7 +1663,7 @@
 
         localStorage.setItem('school_token', state.token);
         localStorage.setItem('school_user', JSON.stringify(state.user));
-        
+
         showToast(`Welcome back, ${state.user.username}!`, 'success');
         showApp();
       } else {
@@ -2393,7 +2655,7 @@
 
     function openDetailsModal(title, data) {
       const root = document.getElementById('modal-root');
-      
+
       const rowsHtml = Object.entries(data).map(([k, v]) => {
         let valStr = '';
         if (v === null || v === undefined) valStr = '<span style="color:var(--text-dim)">—</span>';
@@ -2616,4 +2878,5 @@
     }
   </script>
 </body>
+
 </html>
