@@ -903,16 +903,10 @@
             autofocus autocomplete="username">
         </div>
 
-        <div class="input-group">
+        <div class="input-group" style="margin-bottom: 20px;">
           <label class="input-label" for="login-password">Password <span class="req">*</span></label>
           <input type="password" id="login-password" class="input-control" placeholder="••••••••" required
             autocomplete="current-password">
-        </div>
-
-        <div class="input-group" style="margin-bottom: 20px;">
-          <label class="input-label" for="api-base-url">API Base URL</label>
-          <input type="text" id="api-base-url" class="input-control font-mono" style="font-size: 12px;"
-            value="https://school-system-n9wt.onrender.com/">
         </div>
 
         <button type="submit" id="btn-login" class="btn btn-primary btn-lg" style="width: 100%;">
@@ -1454,9 +1448,18 @@
   <!-- 3. JAVASCRIPT APPLICATION LOGIC -->
   <!-- ========================================================================= -->
   <script>
+    // Default Deployed API URL
+    const DEFAULT_API_URL = 'https://school-system-n9wt.onrender.com';
+
     // State Store
     const state = {
-      apiUrl: localStorage.getItem('school_api_url') || 'http://127.0.0.1:8000',
+      apiUrl: (() => {
+        const saved = localStorage.getItem('school_api_url');
+        if (saved && !saved.includes('127.0.0.1') && !saved.includes('localhost')) {
+          return saved;
+        }
+        return DEFAULT_API_URL;
+      })(),
       token: localStorage.getItem('school_token') || null,
       user: JSON.parse(localStorage.getItem('school_user') || 'null'),
       activeTab: 'students',
@@ -1505,8 +1508,10 @@
     // INITIALIZATION & AUTH CHECKS
     // ==========================================
     window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('api-base-url').value = state.apiUrl;
-      document.getElementById('footer-api-url').textContent = `API: ${state.apiUrl}`;
+      const apiInput = document.getElementById('api-base-url');
+      if (apiInput) apiInput.value = state.apiUrl;
+      const footerApi = document.getElementById('footer-api-url');
+      if (footerApi) footerApi.textContent = `API: ${state.apiUrl}`;
 
       if (state.token && state.user) {
         showApp();
@@ -1635,13 +1640,6 @@
       e.preventDefault();
       const u = document.getElementById('login-username').value.trim();
       const p = document.getElementById('login-password').value;
-      const customApi = document.getElementById('api-base-url').value.trim();
-
-      if (customApi) {
-        state.apiUrl = customApi;
-        localStorage.setItem('school_api_url', state.apiUrl);
-        document.getElementById('footer-api-url').textContent = `API: ${state.apiUrl}`;
-      }
 
       const btn = document.getElementById('btn-login');
       btn.disabled = true;
